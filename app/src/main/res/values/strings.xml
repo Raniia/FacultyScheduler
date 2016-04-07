@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Faculty Scheduler</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="doctorUsername">Username</string>
+    <string name="LoginDoctor">Login</string>
+    <string name="Password">Password</string>
+    <string name="title_activity_doctors_login">DoctorsLogin</string>
+
+    <string name="title_activity_doctors_homepage">doctorsHomepage</string>
+    <string name="pendingAppointments">Pending Appointments</string>
+    <string name="myAppointments">My Appointments</string>
+    <string name="title_activity_students_login">StudentsLogin</string>
+    <string name="studentUsername">Username</string>
+    <string name="title_activity_students_homepage">StudentsHomepage</string>
+    <string name="studentsAppointments">My Appointments</string>
+    <string name="chooseDoctor">Choose Another Doctor</string>
+    <string name="studentsMyDoctors">My Doctors</string>
+    <string name="title_activity_students_appointments">StudentsAppointments</string>
+    <string name="backToHomepage">Back</string>
+    <string name="title_activity_view_list_doctors">ViewListDoctors</string>
+    <string name="title_activity_doctors_schedule">DoctorsSchedule</string>
+    <string name="title_activity_slot_details">SlotDetails</string>
+    <string name="title_activity_schedule_of_doctors">ScheduleOfDoctors</string>
+</resources>
