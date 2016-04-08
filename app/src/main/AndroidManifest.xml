@@ -47,6 +47,10 @@
             android:name=".ScheduleOfDoctors"
             android:label="@string/title_activity_schedule_of_doctors" >
         </activity>
+        <activity
+            android:name=".StudentSetAppointment"
+            android:label="@string/title_activity_student_set_appointment" >
+        </activity>
     </application>
 
 </manifest>

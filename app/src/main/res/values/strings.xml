@@ -23,4 +23,5 @@
     <string name="title_activity_doctors_schedule">DoctorsSchedule</string>
     <string name="title_activity_slot_details">SlotDetails</string>
     <string name="title_activity_schedule_of_doctors">ScheduleOfDoctors</string>
+    <string name="title_activity_student_set_appointment">StudentSetAppointment</string>
 </resources>

@@ -65,7 +65,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview13.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview13.setTextSize(20);
-                textview13.setText("Set Appointment");
+                textview13.setText("Add Appointment");
             }
 
             Saturdaygap1 = jsonArray.getJSONObject(0).getString("Saturdaygap1");
@@ -76,7 +76,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview14.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview14.setTextSize(20);
-                textview14.setText("Set Appointment");
+                textview14.setText("Add Appointment");
             }
 
 
@@ -88,7 +88,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview15.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview15.setTextSize(20);
-                textview15.setText("Set Appointment");
+                textview15.setText("Add Appointment");
             }
             Saturdaygap2 = jsonArray.getJSONObject(0).getString("Saturdaygap2");
             textview16 = (TextView) findViewById(R.id.textView16);
@@ -98,7 +98,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview16.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview16.setTextSize(20);
-                textview16.setText("Set Appointment");
+                textview16.setText("Add Appointment");
             }
             SaturdaythirdSlot = jsonArray.getJSONObject(0).getString("SaturdaythirdSlot");
             textview17 = (TextView) findViewById(R.id.textView17);
@@ -108,7 +108,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview17.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview17.setTextSize(20);
-                textview17.setText("Set Appointment");
+                textview17.setText("Add Appointment");
             }
 
             Saturdaygap3 = jsonArray.getJSONObject(0).getString("Saturdaygap3");
@@ -119,7 +119,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview18.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview18.setTextSize(20);
-                textview18.setText("Set Appointment");
+                textview18.setText("Add Appointment");
             }
 
             SaturdayfourthSlot = jsonArray.getJSONObject(0).getString("SaturdayfourthSlot");
@@ -130,7 +130,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview19.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview19.setTextSize(20);
-                textview19.setText("Set Appointment");
+                textview19.setText("Add Appointment");
             }
             Saturdaygap4 = jsonArray.getJSONObject(0).getString("Saturdaygap4");
             textview20 = (TextView) findViewById(R.id.textView20);
@@ -140,7 +140,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview20.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview20.setTextSize(20);
-                textview20.setText("Set Appointment");
+                textview20.setText("Add Appointment");
             }
 
             SaturdayfifthSlot = jsonArray.getJSONObject(0).getString("SaturdayfifthSlot");
@@ -151,7 +151,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 //textview21.setBackgroundColor(Color.GRAY);
                 textview21.setTextSize(20);
-                textview21.setText("Set Appointment");
+                textview21.setText("Add Appointment");
                 textview21.setBackground(getResources().getDrawable(R.drawable.free_slot));
             }
 
@@ -163,7 +163,7 @@ public class ScheduleOfDoctors extends Activity {
             else {
                 textview22.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview22.setTextSize(20);
-                textview22.setText("Set Appointment");
+                textview22.setText("Add Appointment");
             }
 
         } catch (JSONException e) {
