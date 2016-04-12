@@ -1,9 +1,11 @@
 package com.guc.bachelor.facultyscheduler;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,9 +14,11 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-public class StudentSetAppointment extends AppCompatActivity {
+public class StudentSetAppointment extends Activity {
     private TextView displayDate;
     private Button pickDate;
     private int tyear;
@@ -27,6 +31,10 @@ public class StudentSetAppointment extends AppCompatActivity {
 
                 public void onDateSet(DatePicker view, int year,
                                       int monthOfYear, int dayOfMonth) {
+                    SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
+                    Date date = new Date(year, monthOfYear, dayOfMonth-1);
+                    String dayOfWeek = simpledateformat.format(date);
+                    Log.d("DAY OF WEEK IS", dayOfWeek);
                     tyear = year;
                     tmonth = monthOfYear;
                     tday = dayOfMonth;

@@ -37,7 +37,7 @@ public class StudentsHomepage extends Activity {
     TextView studentName;
     TextView studentEmail;
     Context context = this;
-    //  Button myAppointments;
+     Button myAppointments;
     JSONArray jsonArray;
     String storeStudentID;
 
@@ -45,15 +45,15 @@ public class StudentsHomepage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_students_homepage);
-       /* myAppointments = (Button) findViewById(R.id.myAppointments);
+       myAppointments = (Button) findViewById(R.id.myAppointments);
       myAppointments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ScheduleOfDoctors.class);
+                Intent intent = new Intent(context, StudentSetAppointment.class);
                 startActivity(intent);
             }
         });
-        */
+
 
         json_string = getIntent().getExtras().getString("student_login");
         try {
@@ -97,8 +97,8 @@ public class StudentsHomepage extends Activity {
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.4/faculty_scheduler/getDoctors.php";
-            passStudentSessionURL = "http://192.168.1.4/faculty_scheduler/setAppointment.php?studentID=" + storeStudentID;
+            viewDoctorsURL = "http://192.168.1.7/faculty_scheduler/getDoctors.php";
+            passStudentSessionURL = "http://192.168.1.7/faculty_scheduler/setAppointment.php?studentID=" + storeStudentID;
             Log.i("The URL is", passStudentSessionURL);
 
         }
