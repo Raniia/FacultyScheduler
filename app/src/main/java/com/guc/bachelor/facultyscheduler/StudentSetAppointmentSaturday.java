@@ -3,7 +3,6 @@ package com.guc.bachelor.facultyscheduler;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class StudentSetAppointment extends Activity {
+public class StudentSetAppointmentSaturday extends Activity {
     private TextView displayDate;
     private Button pickDate;
     private int tyear;
@@ -57,7 +56,7 @@ public class StudentSetAppointment extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_set_appointment);
+        setContentView(R.layout.activity_student_set_appointment_saturday);
 
         displayDate = (TextView) findViewById(R.id.displayDate);
                 pickDate = (Button) findViewById(R.id.pickDate);

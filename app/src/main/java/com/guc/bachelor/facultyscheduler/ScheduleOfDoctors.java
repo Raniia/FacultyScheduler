@@ -3,13 +3,12 @@ package com.guc.bachelor.facultyscheduler;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +110,14 @@ public class ScheduleOfDoctors extends Activity {
                 textview15.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview15.setTextSize(20);
                 textview15.setText("Add Appointment");
+
+                textview15.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BackgroundTask backgroundTask = new BackgroundTask();
+                        backgroundTask.execute();
+                    }
+                });
             }
             Saturdaygap2 = jsonArray.getJSONObject(0).getString("Saturdaygap2");
             textview16 = (TextView) findViewById(R.id.textView16);
@@ -230,7 +237,7 @@ public class ScheduleOfDoctors extends Activity {
         protected String doInBackground(String... params) {
 
             try {
-                String setAppointmentSaturdaySecond_URL = "http://192.168.1.7/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
+                String setAppointmentSaturdaySecond_URL = "http://192.168.1.4/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
                 URL url = new URL(setAppointmentSaturdaySecond_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -251,6 +258,36 @@ public class ScheduleOfDoctors extends Activity {
                 }
 
                 Log.d("doctor id is", "Response is: " + response);
+
+
+
+
+                try {
+                    saturdaySecondSlotAppointments = response;
+                    JSONObject object = new JSONObject(saturdaySecondSlotAppointments);
+                    jsonArray = object.getJSONArray("saturdaySecondSlotAppointments");
+
+                    ninthFree = jsonArray.getJSONObject(0).getString("ninthFree");
+                    tenthFree = jsonArray.getJSONObject(0).getString("tenthFree");
+                    eleventhFree = jsonArray.getJSONObject(0).getString("eleventhFree");
+                    twelfthFree = jsonArray.getJSONObject(0).getString("twelfthFree");
+                    thirteenthFree = jsonArray.getJSONObject(0).getString("thirteenthFree");
+                    fourteenthFree = jsonArray.getJSONObject(0).getString("fourteenthFree");
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+
+
+
+
+
                 bufferedReader.close();
                 IS.close();
                 httpURLConnection.disconnect();
@@ -271,35 +308,19 @@ public class ScheduleOfDoctors extends Activity {
         }
 
         protected void onPostExecute(String result) {
-            saturdaySecondSlotAppointments = result;
-            try {
 
-                JSONObject object = new JSONObject(saturdaySecondSlotAppointments);
-                jsonArray = object.getJSONArray("saturdaySecondSlotAppointments");
-
-                 ninthFree = jsonArray.getJSONObject(0).getString("ninthFree");
-                 tenthFree = jsonArray.getJSONObject(0).getString("tenthFree");
-                 eleventhFree = jsonArray.getJSONObject(0).getString("eleventhFree");
-                 twelfthFree = jsonArray.getJSONObject(0).getString("twelfthFree");
-                 thirteenthFree = jsonArray.getJSONObject(0).getString("thirteenthFree");
-                 fourteenthFree = jsonArray.getJSONObject(0).getString("fourteenthFree");
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (ninthFree == "0" && tenthFree == "0" && eleventhFree == "0" && twelfthFree == "0" && thirteenthFree == "0" && fourteenthFree == "0") {
+            if (ninthFree.equals("0") && tenthFree.equals("0") && eleventhFree.equals("0") && twelfthFree.equals("0") && thirteenthFree.equals("0") && fourteenthFree.equals("0")) {
                 Toast.makeText(getApplicationContext(), "No free timings available. Choose another time.", Toast.LENGTH_LONG).show();
 
 
             }
-            else if (ninthFree == "1" || tenthFree == "1" || eleventhFree == "1" || twelfthFree == "1" || thirteenthFree == "1" || fourteenthFree == "1") {
-                Intent intent = new Intent(context, StudentSetAppointment.class);
+            else {
+                Intent intent = new Intent(context, StudentSetAppointmentSaturday.class);
                 intent.putExtra("saturdaySecondSlotAppointments", saturdaySecondSlotAppointments);
                 startActivity(intent);
 
             }
+
         }
 
     }

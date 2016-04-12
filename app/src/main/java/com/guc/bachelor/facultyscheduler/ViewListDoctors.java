@@ -207,7 +207,7 @@ public class ViewListDoctors extends Activity {
             protected String doInBackground(String... params) {
 
                 try {
-                    String showDoctorSchedule_URL = "http://192.168.1.7/faculty_scheduler/showDoctorSchedule.php";
+                    String showDoctorSchedule_URL = "http://192.168.1.4/faculty_scheduler/showDoctorSchedule.php";
                     URL url = new URL(showDoctorSchedule_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
