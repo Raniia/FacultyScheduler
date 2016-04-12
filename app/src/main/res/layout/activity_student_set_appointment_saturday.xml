@@ -31,9 +31,9 @@
         android:layout_height="wrap_content"
         android:text="Pick a date"
         android:id="@+id/pickDate"
-        android:layout_marginTop="53dp"
         android:layout_below="@+id/textView78"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:text="date here"
         android:textSize="20dp"
         android:id="@+id/displayDate"
-        android:layout_alignBottom="@+id/pickDate"
+        android:layout_below="@+id/pickDate"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -50,55 +50,65 @@
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button2"
-        android:layout_below="@+id/pickDate"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="60dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/displayDate" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button3"
-        android:layout_alignTop="@+id/button2"
-        android:layout_toEndOf="@+id/button2"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/button6"
+        android:layout_alignStart="@+id/button2" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button4"
-        android:layout_alignBottom="@+id/button3"
-        android:layout_toEndOf="@+id/button3"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/button7"
+        android:layout_alignStart="@+id/button3" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button5"
-        android:layout_below="@+id/button2"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/button2"
+        android:layout_toEndOf="@+id/displayDate" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button6"
-        android:layout_alignTop="@+id/button5"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_below="@+id/button5"
+        android:layout_alignStart="@+id/button5"
+        android:layout_marginTop="28dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button7"
-        android:layout_alignBottom="@+id/button6"
-        android:layout_toEndOf="@+id/button6"
+        android:visibility="invisible"
+        android:layout_below="@+id/button6"
+        android:layout_alignStart="@+id/button6"
+        android:layout_marginTop="28dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView79"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:visibility="invisible" />
 
 

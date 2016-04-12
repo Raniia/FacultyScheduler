@@ -108,7 +108,7 @@ public class StudentsLogin extends Activity {
                 String student_email = params[1];
                 String student_password = params[2];
                 try {
-                    String studentLogin_URL = "http://192.168.1.4/faculty_scheduler/loginStudents.php";
+                    String studentLogin_URL = "http://192.168.1.2/faculty_scheduler/loginStudents.php";
                      URL url = new URL(studentLogin_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");

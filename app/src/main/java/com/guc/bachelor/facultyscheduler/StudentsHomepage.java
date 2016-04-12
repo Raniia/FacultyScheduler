@@ -89,8 +89,8 @@ public class StudentsHomepage extends Activity {
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.4/faculty_scheduler/getDoctors.php";
-            passStudentSessionURL = "http://192.168.1.4/faculty_scheduler/setAppointment.php?studentID=" + storeStudentID;
+            viewDoctorsURL = "http://192.168.1.2/faculty_scheduler/getDoctors.php";
+            passStudentSessionURL = "http://192.168.1.2/faculty_scheduler/setAppointment.php?studentID=" + storeStudentID;
             Log.i("The URL is", passStudentSessionURL);
 
         }
