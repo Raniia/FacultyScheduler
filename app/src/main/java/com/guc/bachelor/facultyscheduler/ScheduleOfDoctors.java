@@ -237,7 +237,7 @@ public class ScheduleOfDoctors extends Activity {
         protected String doInBackground(String... params) {
 
             try {
-                String setAppointmentSaturdaySecond_URL = "http://192.168.1.2/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
+                String setAppointmentSaturdaySecond_URL = "http://192.168.1.6/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
                 URL url = new URL(setAppointmentSaturdaySecond_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -278,12 +278,6 @@ public class ScheduleOfDoctors extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
-
-
-
-
 
 
 

@@ -33,6 +33,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,14 +57,18 @@ public class StudentSetAppointmentSaturday extends Activity {
     Button button7;
     String fourteenthFree;
 
+        String student_ID = StudentsHomepage.storeStudentID;
     String doctor_ID;
     TextView textView79;
     String slotNumber;
     private TextView displayDate;
+    String dateApp;
     private Button pickDate;
     private int tyear;
     private int tmonth;
     private int tday;
+
+    String dayOfWeek;
     private DatePickerDialog.OnDateSetListener pDateSetListener =
             new DatePickerDialog.OnDateSetListener() {
 
@@ -71,7 +76,7 @@ public class StudentSetAppointmentSaturday extends Activity {
                                       int monthOfYear, int dayOfMonth) {
                     SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
                     Date date = new Date(year, monthOfYear, dayOfMonth - 1);
-                    String dayOfWeek = simpledateformat.format(date);
+                    dayOfWeek = simpledateformat.format(date);
                     Log.d("DAY OF WEEK IS", dayOfWeek);
                     if (dayOfWeek.equals("Saturday")) {
                         tyear = year;
@@ -87,12 +92,23 @@ public class StudentSetAppointmentSaturday extends Activity {
             };
 
     private void updateDisplay() {
-        displayDate.setText(
-                new StringBuilder()
-                        // Month is 0 based so add 1
-                        .append(tmonth + 1).append("/")
-                        .append(tday).append("/")
-                        .append(tyear).append(" "));
+      //  if (dayOfWeek.equals("Saturday")) {
+
+            displayDate.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+
+                            .append(tyear).append("-")
+                            .append(tmonth + 1).append("-")
+                            .append(tday).append("")
+
+            );
+            dateApp = displayDate.getText().toString();
+       // }
+       // else {
+         //   Toast.makeText(getApplicationContext(), "nooooot valid.", Toast.LENGTH_LONG).show();
+
+     //   }
     }
 
     private void displayToast() {
@@ -126,8 +142,37 @@ public class StudentSetAppointmentSaturday extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String checkDate = displayDate.getText().toString();
+                String [] check = checkDate.split("-");
+                String yyyy =check[0];
+                String mm=check[1];
+                String dd=check[2];
+                String input = yyyy+"-"+mm+"-"+dd;
+                SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = null;
+                try {
+                    date = inFormat.parse(input);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                SimpleDateFormat outFormat = new SimpleDateFormat("EEEE");
+                String goal = outFormat.format(date);
+
+               /* SimpleDateFormat s = new SimpleDateFormat("EEEE");
+                Date checkd = new Date(tyear, tmonth +1 , tday);
+
+                String day = s.format(checkd);*/
+                Log.d("bossssssssiii", input);
+                Log.d("DATEEEEEEEEEEEEEEE IS", checkDate);
+Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
+                if (goal.equals("Saturday")) {
                 BackgroundTask backgroundTask = new BackgroundTask();
                 backgroundTask.execute();
+                } else {
+                    Toast.makeText(getApplicationContext(), "INVALID DAY.", Toast.LENGTH_LONG).show();
+
+                }
             }
         });
         fifteenMin = getIntent().getExtras().getString("saturdaySecondSlotAppointments");
@@ -228,7 +273,6 @@ public class StudentSetAppointmentSaturday extends Activity {
                     public void onClick(View v) {
                         Toast.makeText(getApplicationContext(), "An appointment at 11:15 -> 11:30. Please book to send the doctor a request. ", Toast.LENGTH_LONG).show();
                         textView79 = (TextView) findViewById(R.id.textView79);
-
                         textView79.setText("12");
                         slotNumber = textView79.getText().toString();
                     }
@@ -253,7 +297,6 @@ public class StudentSetAppointmentSaturday extends Activity {
                     public void onClick(View v) {
                         Toast.makeText(getApplicationContext(), "An appointment at 11:30 -> 11:45. Please book to send the doctor a request. ", Toast.LENGTH_LONG).show();
                         textView79 = (TextView) findViewById(R.id.textView79);
-
                         textView79.setText("13");
                         slotNumber = textView79.getText().toString();
                     }
@@ -338,7 +381,7 @@ public class StudentSetAppointmentSaturday extends Activity {
         protected String doInBackground(String... params) {
 
             try {
-                String setAppointment_URL = "http://192.168.1.2/faculty_scheduler/setAppointment.php";
+                String setAppointment_URL = "http://192.168.1.6/faculty_scheduler/setAppointment.php";
                 URL url = new URL(setAppointment_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -346,7 +389,9 @@ public class StudentSetAppointmentSaturday extends Activity {
                 OutputStream OS = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
                 String data = URLEncoder.encode("slotNumber", "UTF-8") + "=" + URLEncoder.encode(slotNumber, "UTF-8") + "&" +
-                        URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
+                        URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8")+ "&" +
+                        URLEncoder.encode("student_ID", "UTF-8") + "=" + URLEncoder.encode(student_ID, "UTF-8")+ "&" +
+                        URLEncoder.encode("dateApp", "UTF-8") + "=" + URLEncoder.encode(dateApp, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -359,7 +404,7 @@ public class StudentSetAppointmentSaturday extends Activity {
                     response += line;
                 }
 
-                Log.d("THE", "Response is: " + response);
+                Log.d("THE", "STUDENT ID is: " + response);
 
 
                 bufferedReader.close();

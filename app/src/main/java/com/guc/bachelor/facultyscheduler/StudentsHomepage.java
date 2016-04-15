@@ -15,12 +15,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class StudentsHomepage extends Activity {
     String json_string;
@@ -31,7 +35,7 @@ public class StudentsHomepage extends Activity {
     Context context = this;
      Button myAppointments;
     JSONArray jsonArray;
-    String storeStudentID;
+   static String storeStudentID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class StudentsHomepage extends Activity {
             studentID = (TextView) findViewById(R.id.student_ID);
             studentID.setText("Student ID: " + student_ID);
             storeStudentID = student_ID;
+            Log.d("STORE STUDENT ID", storeStudentID);
 
             String student_name = jsonArray.getJSONObject(0).getString("student_name");
             studentName = (TextView) findViewById(R.id.student_name);
@@ -89,8 +94,8 @@ public class StudentsHomepage extends Activity {
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.2/faculty_scheduler/getDoctors.php";
-            passStudentSessionURL = "http://192.168.1.2/faculty_scheduler/setAppointment.php?studentID=" + storeStudentID;
+            viewDoctorsURL = "http://192.168.1.6/faculty_scheduler/getDoctors.php";
+            passStudentSessionURL = "http://192.168.1.6/faculty_scheduler/setAppointment.php";
             Log.i("The URL is", passStudentSessionURL);
 
         }
@@ -134,11 +139,25 @@ public class StudentsHomepage extends Activity {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
-// read the response
+                OutputStream OS = conn.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                String data = URLEncoder.encode("student_ID", "UTF-8") + "=" + URLEncoder.encode(storeStudentID, "UTF-8");
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                OS.close();
+                InputStream IS = conn.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                String response = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    response += line;
+                }
+// read the responseedReader = new BufferedReader(new InputStreamReader(in, "iso-8859-1"));
+                //  String response = org.
                 //   System.out.println("Response Code: " + conn.getResponseCode());
                 //  InputStream in = new BufferedInputStream(conn.getInputStream());
-                //    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "iso-8859-1"));
-                //  String response = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
+                //    BufferedReader bufferapache.commons.io.IOUtils.toString(in, "UTF-8");
                 //System.out.println(response);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
