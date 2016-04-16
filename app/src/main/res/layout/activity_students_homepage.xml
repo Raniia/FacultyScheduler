@@ -52,4 +52,12 @@
         android:id="@+id/myAppointments"
         android:layout_alignBottom="@+id/viewDoctors"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/avatar"
+        android:layout_below="@+id/student_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="103dp" />
 </RelativeLayout>

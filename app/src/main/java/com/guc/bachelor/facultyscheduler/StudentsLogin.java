@@ -108,7 +108,7 @@ public class StudentsLogin extends Activity {
                 String student_email = params[1];
                 String student_password = params[2];
                 try {
-                    String studentLogin_URL = "http://192.168.1.6/faculty_scheduler/loginStudents.php";
+                    String studentLogin_URL = "http://192.168.1.4/faculty_scheduler/loginStudents.php";
                      URL url = new URL(studentLogin_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -164,9 +164,9 @@ public class StudentsLogin extends Activity {
         protected void onPostExecute(String result) {
             json_string = result;
 
-            TextView textView = (TextView) findViewById(R.id.textView);
+         /*   TextView textView = (TextView) findViewById(R.id.textView);
             textView.setText(json_string);
-
+*/
             //alertDialog.setMessage(result);
             //alertDialog.show();
             if (!json_string.contains("student_ID") ) {

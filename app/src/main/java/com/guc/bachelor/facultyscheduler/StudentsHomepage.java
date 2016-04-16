@@ -3,11 +3,14 @@ package com.guc.bachelor.facultyscheduler;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -34,6 +37,10 @@ public class StudentsHomepage extends Activity {
     TextView studentEmail;
     Context context = this;
      Button myAppointments;
+
+    ImageView avatar;
+    String student_picture;
+
     JSONArray jsonArray;
    static String storeStudentID;
 
@@ -70,6 +77,16 @@ public class StudentsHomepage extends Activity {
             String student_email = jsonArray.getJSONObject(0).getString("student_email");
             studentEmail = (TextView) findViewById(R.id.student_email);
             studentEmail.setText("Student Email: " + student_email);
+
+
+            student_picture = jsonArray.getJSONObject(0).getString("student_picture");
+            avatar = (ImageView) findViewById(R.id.avatar);
+
+
+            new DownloadImageTask(avatar).execute();
+
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -91,11 +108,13 @@ public class StudentsHomepage extends Activity {
 
         String viewDoctorsURL;
         String passStudentSessionURL;
+        String studentImage;
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.6/faculty_scheduler/getDoctors.php";
-            passStudentSessionURL = "http://192.168.1.6/faculty_scheduler/setAppointment.php";
+            viewDoctorsURL = "http://192.168.1.4/faculty_scheduler/getDoctors.php";
+            passStudentSessionURL = "http://192.168.1.4/faculty_scheduler/setAppointment.php";
+            studentImage = "http://192.168.1.4/faculty_scheduler/images/" + student_picture ;
             Log.i("The URL is", passStudentSessionURL);
 
         }
@@ -177,6 +196,62 @@ public class StudentsHomepage extends Activity {
             intent.putExtra("viewDoctors", allDoctors);
             startActivity(intent);
 
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay ="http://192.168.1.4/faculty_scheduler/images/" + student_picture ;
+
+            Bitmap mIcon = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 
