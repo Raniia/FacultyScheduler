@@ -72,7 +72,12 @@ public class StudentsHomepage extends Activity {
 
             String student_name = jsonArray.getJSONObject(0).getString("student_name");
             studentName = (TextView) findViewById(R.id.student_name);
-            studentName.setText("Student Name: " + student_name);
+            studentName.setText(student_name);
+
+
+           String student_group = jsonArray.getJSONObject(0).getString("student_group");
+
+
 
             String student_email = jsonArray.getJSONObject(0).getString("student_email");
             studentEmail = (TextView) findViewById(R.id.student_email);

@@ -14,18 +14,23 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="student_ID"
         android:id="@+id/student_ID"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignBaseline="@+id/viewDoctors"
+        android:layout_alignBottom="@+id/viewDoctors"
+        android:layout_alignEnd="@+id/student_email"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="setudent_name"
+        android:text="student_name"
+        android:textSize="30dp"
+        android:textColor="#FFFFFF"
         android:id="@+id/student_name"
-        android:layout_below="@+id/student_ID"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="42dp" />
+        android:background="@drawable/round_cornername"
+
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,32 +38,32 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="student_email"
         android:id="@+id/student_email"
-        android:layout_below="@+id/student_name"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="51dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/avatar" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View Doctors"
         android:id="@+id/viewDoctors"
-        android:layout_alignParentBottom="true"
         android:onClick="viewDoctors"
-        android:layout_alignEnd="@+id/student_ID" />
+        android:layout_above="@+id/student_email"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Appointments"
         android:id="@+id/myAppointments"
-        android:layout_alignBottom="@+id/viewDoctors"
-        android:layout_alignParentEnd="true" />
+        android:layout_above="@+id/student_email"
+        android:layout_toEndOf="@+id/student_name" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/avatar"
-        android:layout_below="@+id/student_email"
+
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="103dp" />
+        android:layout_marginTop="45dp" />
 </RelativeLayout>

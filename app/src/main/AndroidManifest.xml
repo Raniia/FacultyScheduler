@@ -28,6 +28,10 @@
             android:label="@string/title_activity_doctors_homepage" >
         </activity>
         <activity
+            android:name=".DoctorsLogin"
+            android:label="@string/title_activity_doctors_login" >
+        </activity>
+        <activity
             android:name=".StudentsHomepage"
             android:label="@string/title_activity_students_homepage" >
         </activity>
