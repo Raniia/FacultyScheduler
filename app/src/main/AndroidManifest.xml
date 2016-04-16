@@ -11,13 +11,17 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".StudentsLogin"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".StudentsLogin"
+            android:label="@string/title_activity_students_login" >
         </activity>
         <activity
             android:name=".DoctorsHomepage"
@@ -51,6 +55,7 @@
             android:name=".StudentSetAppointmentSaturday"
             android:label="@string/title_activity_student_set_appointment" >
         </activity>
+
     </application>
 
 </manifest>
