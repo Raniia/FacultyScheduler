@@ -262,8 +262,8 @@ public class ViewListDoctors extends Activity {
             protected void onPostExecute(String result) {
                 doctor_details = result;
 
-                TextView textView = (TextView) findViewById(R.id.textView4);
-                textView.setText(doctor_details);
+               /* TextView textView = (TextView) findViewById(R.id.textView4);
+                textView.setText(doctor_details);*/
              //   alertDialog.setMessage(result);
                // alertDialog.show();
 

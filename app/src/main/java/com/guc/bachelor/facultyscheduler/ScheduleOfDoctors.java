@@ -35,6 +35,9 @@ public class ScheduleOfDoctors extends Activity {
     String json_string;
     JSONArray jsonArray;
 
+
+//Saturday
+
     TextView textview13;
     String SaturdayfirstSlot;
 
@@ -64,6 +67,49 @@ public class ScheduleOfDoctors extends Activity {
 
     TextView textview22;
     String Saturdaygap5;
+
+
+
+    //Sunday
+
+    TextView textview24;
+    String SundayfirstSlot;
+
+    TextView textview25;
+    String Sundaygap1;
+
+    TextView textview26;
+    String SundaysecondSlot;
+
+    TextView textview27;
+    String Sundaygap2;
+
+    TextView textview28;
+    String SundaythirdSlot;
+
+    TextView textview29;
+    String Sundaygap3;
+
+    TextView textview30;
+    String SundayfourthSlot;
+
+    TextView textview31;
+    String Sundaygap4;
+
+    TextView textview32;
+    String SundayfifthSlot;
+
+    TextView textview33;
+    String Sundaygap5;
+
+
+
+
+
+
+
+
+
 
 
     String doctor_ID;

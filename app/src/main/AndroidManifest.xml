@@ -59,7 +59,10 @@
             android:name=".StudentSetAppointmentSaturday"
             android:label="@string/title_activity_student_set_appointment" >
         </activity>
-
+        <activity
+            android:name=".doctorsPersonalSchedule"
+            android:label="@string/title_activity_doctors_personal_schedule" >
+        </activity>
     </application>
 
 </manifest>

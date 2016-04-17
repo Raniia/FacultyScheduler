@@ -35,6 +35,8 @@ public class StudentsHomepage extends Activity {
     TextView studentID;
     TextView studentName;
     TextView studentEmail;
+    TextView studentMajor;
+   TextView studentFaculty;
     Context context = this;
      Button myAppointments;
 
@@ -64,9 +66,11 @@ public class StudentsHomepage extends Activity {
 
             jsonArray = object.getJSONArray("student_login_details");
 
+            String student_group = jsonArray.getJSONObject(0).getString("student_group");
+
             String student_ID = jsonArray.getJSONObject(0).getString("student_ID");
             studentID = (TextView) findViewById(R.id.student_ID);
-            studentID.setText("Student ID: " + student_ID);
+            studentID.setText( student_group + student_ID );
             storeStudentID = student_ID;
             Log.d("STORE STUDENT ID", storeStudentID);
 
@@ -75,13 +79,18 @@ public class StudentsHomepage extends Activity {
             studentName.setText(student_name);
 
 
-           String student_group = jsonArray.getJSONObject(0).getString("student_group");
-
-
-
             String student_email = jsonArray.getJSONObject(0).getString("student_email");
             studentEmail = (TextView) findViewById(R.id.student_email);
-            studentEmail.setText("Student Email: " + student_email);
+            studentEmail.setText( student_email);
+
+            String student_major = jsonArray.getJSONObject(0).getString("student_major");
+            studentMajor = (TextView) findViewById(R.id.student_major);
+            studentMajor.setText(student_major);
+
+
+            String student_faculty = jsonArray.getJSONObject(0).getString("student_faculty");
+            studentFaculty = (TextView) findViewById(R.id.student_faculty);
+            studentFaculty.setText(student_faculty);
 
 
             student_picture = jsonArray.getJSONObject(0).getString("student_picture");
@@ -242,7 +251,7 @@ public class StudentsHomepage extends Activity {
             this.bmImage = bmImage;
         }
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay ="http://192.168.1.4/faculty_scheduler/images/" + student_picture ;
+            String urldisplay ="http://192.168.1.4/faculty_scheduler/studentAvatars/" + student_picture ;
 
             Bitmap mIcon = null;
             try {
