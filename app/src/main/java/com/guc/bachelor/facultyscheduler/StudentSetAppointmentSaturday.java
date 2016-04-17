@@ -57,9 +57,13 @@ public class StudentSetAppointmentSaturday extends Activity {
     Button button7;
     String fourteenthFree;
 
-        String student_ID = StudentsHomepage.storeStudentID;
+    String student_ID = StudentsHomepage.storeStudentID;
     String doctor_ID;
     TextView textView79;
+    TextView textView80;
+
+    String timing;
+
     String slotNumber;
     private TextView displayDate;
     String dateApp;
@@ -92,23 +96,23 @@ public class StudentSetAppointmentSaturday extends Activity {
             };
 
     private void updateDisplay() {
-      //  if (dayOfWeek.equals("Saturday")) {
+        //  if (dayOfWeek.equals("Saturday")) {
 
-            displayDate.setText(
-                    new StringBuilder()
-                            // Month is 0 based so add 1
+        displayDate.setText(
+                new StringBuilder()
+                        // Month is 0 based so add 1
 
-                            .append(tyear).append("-")
-                            .append(tmonth + 1).append("-")
-                            .append(tday).append("")
+                        .append(tyear).append("-")
+                        .append(tmonth + 1).append("-")
+                        .append(tday).append("")
 
-            );
-            dateApp = displayDate.getText().toString();
-       // }
-       // else {
-         //   Toast.makeText(getApplicationContext(), "nooooot valid.", Toast.LENGTH_LONG).show();
+        );
+        dateApp = displayDate.getText().toString();
+        // }
+        // else {
+        //   Toast.makeText(getApplicationContext(), "nooooot valid.", Toast.LENGTH_LONG).show();
 
-     //   }
+        //   }
     }
 
     private void displayToast() {
@@ -165,10 +169,10 @@ public class StudentSetAppointmentSaturday extends Activity {
                 String day = s.format(checkd);*/
                 Log.d("bossssssssiii", input);
                 Log.d("DATEEEEEEEEEEEEEEE IS", checkDate);
-Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
+                Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                 if (goal.equals("Saturday")) {
-                BackgroundTask backgroundTask = new BackgroundTask();
-                backgroundTask.execute();
+                    BackgroundTask backgroundTask = new BackgroundTask();
+                    backgroundTask.execute();
                 } else {
                     Toast.makeText(getApplicationContext(), "INVALID DAY.", Toast.LENGTH_LONG).show();
 
@@ -188,7 +192,7 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                 button2.setVisibility(View.VISIBLE);
                 button2.setText("10:30 -> 10:45");
                 button2.setPaintFlags(button2.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                button2.setBackgroundColor(Color.rgb(255, 229, 204));
+                button2.setBackgroundColor(Color.rgb(204,204,255));
 
             } else {
                 button2.setVisibility(View.VISIBLE);
@@ -199,8 +203,11 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                     public void onClick(View v) {
                         Toast.makeText(getApplicationContext(), "An appointment at 10:30 -> 11:45. Please book to send the doctor a request. ", Toast.LENGTH_LONG).show();
                         textView79 = (TextView) findViewById(R.id.textView79);
-
+                        textView80 = (TextView) findViewById(R.id.textView80);
+                        textView80.setText(button2.getText());
+                        timing = textView80.getText().toString();
                         textView79.setText("9");
+
                         slotNumber = textView79.getText().toString();
 
                     }
@@ -214,7 +221,7 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                 button3.setVisibility(View.VISIBLE);
                 button3.setText("10:45 -> 11:00");
                 button3.setPaintFlags(button2.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                button3.setBackgroundColor(Color.rgb(255, 229, 204));
+                button3.setBackgroundColor(Color.rgb(204,204,255));
 
             } else {
                 button3.setVisibility(View.VISIBLE);
@@ -225,6 +232,10 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                     public void onClick(View v) {
                         Toast.makeText(getApplicationContext(), "An appointment at 10:45 -> 11:00. Please book to send the doctor a request. ", Toast.LENGTH_LONG).show();
                         textView79 = (TextView) findViewById(R.id.textView79);
+
+                        textView80 = (TextView) findViewById(R.id.textView80);
+                        textView80.setText(button3.getText());
+                        timing = textView80.getText().toString();
 
                         textView79.setText("10");
                         slotNumber = textView79.getText().toString();
@@ -238,7 +249,7 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                 button4.setText("11:00 -> 11:15");
                 button4.setVisibility(View.VISIBLE);
                 button4.setPaintFlags(button2.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                button4.setBackgroundColor(Color.rgb(255, 229, 204));
+                button4.setBackgroundColor(Color.rgb(204,204,255));
 
             } else {
                 button4.setVisibility(View.VISIBLE);
@@ -252,6 +263,9 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
 
                         textView79.setText("11");
                         slotNumber = textView79.getText().toString();
+                        textView80 = (TextView) findViewById(R.id.textView80);
+                        textView80.setText(button4.getText());
+                        timing = textView80.getText().toString();
                     }
                 });
             }
@@ -262,7 +276,7 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                 button5.setVisibility(View.VISIBLE);
                 button5.setText("11:15 -> 11:30");
                 button5.setPaintFlags(button2.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                button5.setBackgroundColor(Color.rgb(255, 229, 204));
+                button5.setBackgroundColor(Color.rgb(204,204,255));
 
             } else {
                 button5.setVisibility(View.VISIBLE);
@@ -275,6 +289,9 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                         textView79 = (TextView) findViewById(R.id.textView79);
                         textView79.setText("12");
                         slotNumber = textView79.getText().toString();
+                        textView80 = (TextView) findViewById(R.id.textView80);
+                        textView80.setText(button5.getText());
+                        timing = textView80.getText().toString();
                     }
                 });
             }
@@ -286,7 +303,7 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                 button6.setVisibility(View.VISIBLE);
                 button6.setText("11:30 -> 11:45");
                 button6.setPaintFlags(button2.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                button6.setBackgroundColor(Color.rgb(255, 229, 204));
+                button6.setBackgroundColor(Color.rgb(204,204,255));
 
             } else {
                 button6.setVisibility(View.VISIBLE);
@@ -299,6 +316,9 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                         textView79 = (TextView) findViewById(R.id.textView79);
                         textView79.setText("13");
                         slotNumber = textView79.getText().toString();
+                        textView80 = (TextView) findViewById(R.id.textView80);
+                        textView80.setText(button6.getText());
+                        timing = textView80.getText().toString();
                     }
                 });
             }
@@ -310,7 +330,7 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                 button7.setVisibility(View.VISIBLE);
                 button7.setText("11:45 -> 12:00");
                 button7.setPaintFlags(button2.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                button7.setBackgroundColor(Color.rgb(255, 229, 204));
+                button7.setBackgroundColor(Color.rgb(204,204,255));
 
             } else {
                 button7.setVisibility(View.VISIBLE);
@@ -324,6 +344,9 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
 
                         textView79.setText("14");
                         slotNumber = textView79.getText().toString();
+                        textView80 = (TextView) findViewById(R.id.textView80);
+                        textView80.setText(button7.getText());
+                        timing = textView80.getText().toString();
                     }
                 });
             }
@@ -391,6 +414,8 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
                 String data = URLEncoder.encode("slotNumber", "UTF-8") + "=" + URLEncoder.encode(slotNumber, "UTF-8") + "&" +
                         URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8")+ "&" +
                         URLEncoder.encode("student_ID", "UTF-8") + "=" + URLEncoder.encode(student_ID, "UTF-8")+ "&" +
+                        URLEncoder.encode("timing", "UTF-8") + "=" + URLEncoder.encode(timing, "UTF-8")+ "&" +
+
                         URLEncoder.encode("dateApp", "UTF-8") + "=" + URLEncoder.encode(dateApp, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
@@ -444,3 +469,4 @@ Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
 
 
 }
+
