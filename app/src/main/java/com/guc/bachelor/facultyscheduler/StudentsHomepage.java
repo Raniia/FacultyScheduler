@@ -126,9 +126,9 @@ public class StudentsHomepage extends Activity {
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.4/faculty_scheduler/getDoctors.php";
-            passStudentSessionURL = "http://192.168.1.4/faculty_scheduler/setAppointment.php";
-            studentImage = "http://192.168.1.4/faculty_scheduler/images/" + student_picture ;
+            viewDoctorsURL = "http://192.168.1.5/faculty_scheduler/getDoctors.php";
+            passStudentSessionURL = "http://192.168.1.5/faculty_scheduler/setAppointment.php";
+            studentImage = "http://192.168.1.5/faculty_scheduler/images/" + student_picture ;
             Log.i("The URL is", passStudentSessionURL);
 
         }
@@ -157,7 +157,6 @@ public class StudentsHomepage extends Activity {
                 inputStream.close();
                 httpURLConnection.disconnect();
                 String response = stringBuilder.toString().trim();
-
                 return response; //response is the list of doctors
 
             } catch (MalformedURLException e) {
@@ -167,38 +166,11 @@ public class StudentsHomepage extends Activity {
             }
 
 
-            try {
-                URL url = new URL(passStudentSessionURL);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-                OutputStream OS = conn.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
-                String data = URLEncoder.encode("student_ID", "UTF-8") + "=" + URLEncoder.encode(storeStudentID, "UTF-8");
-                bufferedWriter.write(data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                OS.close();
-                InputStream IS = conn.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
-                String response = "";
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    response += line;
-                }
-// read the responseedReader = new BufferedReader(new InputStreamReader(in, "iso-8859-1"));
-                //  String response = org.
-                //   System.out.println("Response Code: " + conn.getResponseCode());
-                //  InputStream in = new BufferedInputStream(conn.getInputStream());
-                //    BufferedReader bufferapache.commons.io.IOUtils.toString(in, "UTF-8");
-                //System.out.println(response);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
             return null;
+
+
+
+
         }
 
 
@@ -251,7 +223,7 @@ public class StudentsHomepage extends Activity {
             this.bmImage = bmImage;
         }
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay ="http://192.168.1.4/faculty_scheduler/studentAvatars/" + student_picture ;
+            String urldisplay ="http://192.168.1.5/faculty_scheduler/studentAvatars/" + student_picture ;
 
             Bitmap mIcon = null;
             try {

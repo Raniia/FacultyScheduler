@@ -2,6 +2,7 @@ package com.guc.bachelor.facultyscheduler;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -9,17 +10,30 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class DoctorsHomepage extends Activity {
+    String scheduleOfDoctor;
     String json_string;
     TextView doctorID;
     TextView doctorName;
@@ -29,6 +43,13 @@ public class DoctorsHomepage extends Activity {
     Context context = this;
     Button myAppointments;
     Button mySchedule;
+
+    String doctor_ID;
+    String doctor_name;
+    String doctor_email;
+    String doctor_department;
+    String doctor_office;
+
 
     ImageView avatar;
     String doctor_picture;
@@ -49,27 +70,27 @@ public class DoctorsHomepage extends Activity {
             jsonArray = object.getJSONArray("doctor_login_details");
 
 
-            String doctor_ID = jsonArray.getJSONObject(0).getString("doctor_ID");
+            doctor_ID= jsonArray.getJSONObject(0).getString("doctor_ID");
             doctorID = (TextView) findViewById(R.id.doctor_ID);
             doctorID.setText(doctor_ID);
             storeDoctorID = doctor_ID;
             Log.d("STORE DOCTOR ID", storeDoctorID);
 
-            String doctor_name = jsonArray.getJSONObject(0).getString("doctor_name");
+            doctor_name = jsonArray.getJSONObject(0).getString("doctor_name");
             doctorName = (TextView) findViewById(R.id.doctor_name);
             doctorName.setText(doctor_name);
 
 
-            String doctor_email = jsonArray.getJSONObject(0).getString("doctor_email");
+            doctor_email = jsonArray.getJSONObject(0).getString("doctor_email");
             doctorEmail = (TextView) findViewById(R.id.doctor_email);
             doctorEmail.setText(doctor_email);
 
-            String doctor_department = jsonArray.getJSONObject(0).getString("doctor_department");
+            doctor_department= jsonArray.getJSONObject(0).getString("doctor_department");
             doctorDepartment = (TextView) findViewById(R.id.doctor_department);
             doctorDepartment.setText(doctor_department);
 
 
-            String doctor_office = jsonArray.getJSONObject(0).getString("doctor_office");
+            doctor_office = jsonArray.getJSONObject(0).getString("doctor_office");
             doctorOffice = (TextView) findViewById(R.id.doctor_office);
             doctorOffice.setText(doctor_office);
 
@@ -88,6 +109,13 @@ public class DoctorsHomepage extends Activity {
 
 
     }
+
+    public void doctorViewSchedule(View view) {
+        BackgroundTask backgroundTask = new BackgroundTask(this);
+        backgroundTask.execute();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,6 +138,97 @@ public class DoctorsHomepage extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+    class BackgroundTask extends AsyncTask<Void, Void, String> {
+        Context ctx;
+
+        BackgroundTask(Context ctx) {
+            this.ctx = ctx;
+
+        }
+
+
+        String viewMySchedule_URL;
+
+
+        protected void onPreExecute() {
+            viewMySchedule_URL = "http://192.168.1.5/faculty_scheduler/doctorViewMySchedule.php";
+
+        }
+
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                URL url = new URL(viewMySchedule_URL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                OutputStream OS = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                OS.close();
+                InputStream IS = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                String response = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    response += line;
+                }
+
+                Log.d("THE", "DOCTOR ID is: " + response);
+
+
+                bufferedReader.close();
+                IS.close();
+                httpURLConnection.disconnect();
+                return response;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        protected void onPostExecute(String result) {
+
+            scheduleOfDoctor = result;
+
+
+                Intent intent = new Intent(context, doctorsPersonalSchedule.class);
+            intent.putExtra("scheduleOfDoctor", scheduleOfDoctor);
+
+            startActivity(intent);
+
+
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 
