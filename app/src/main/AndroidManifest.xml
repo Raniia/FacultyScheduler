@@ -63,6 +63,10 @@
             android:name=".doctorsPersonalSchedule"
             android:label="@string/title_activity_doctors_personal_schedule" >
         </activity>
+        <activity
+            android:name=".doctorEditSchedule"
+            android:label="@string/title_activity_doctor_edit_schedule" >
+        </activity>
     </application>
 
 </manifest>

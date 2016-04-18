@@ -26,4 +26,5 @@
     <string name="title_activity_student_set_appointment">StudentSetAppointment</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_doctors_personal_schedule">doctorsPersonalSchedule</string>
+    <string name="title_activity_doctor_edit_schedule">doctorEditSchedule</string>
 </resources>

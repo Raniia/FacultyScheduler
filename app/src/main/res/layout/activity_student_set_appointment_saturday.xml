@@ -148,7 +148,7 @@
         android:minLines="6"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/purpose"
         android:layout_alignBottom="@+id/textView79"
         android:scrollbars="vertical"
         android:hint="  Purpose of the appointment..."

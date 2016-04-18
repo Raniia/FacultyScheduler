@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,8 @@ public class StudentSetAppointmentSaturday extends Activity {
     TextView textView79;
     TextView textView80;
 
+String appointmentPurpose;
+    EditText purpose;
     String timing;
 
     String slotNumber;
@@ -125,6 +128,9 @@ public class StudentSetAppointmentSaturday extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_set_appointment_saturday);
 
+        purpose = (EditText) findViewById(R.id.purpose);
+        appointmentPurpose = purpose.getText().toString();
+
         displayDate = (TextView) findViewById(R.id.displayDate);
         pickDate = (Button) findViewById(R.id.pickDate);
 
@@ -170,11 +176,23 @@ public class StudentSetAppointmentSaturday extends Activity {
                 Log.d("bossssssssiii", input);
                 Log.d("DATEEEEEEEEEEEEEEE IS", checkDate);
                 Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
-                if (goal.equals("Saturday")) {
-                    BackgroundTask backgroundTask = new BackgroundTask();
-                    backgroundTask.execute();
-                } else {
-                    Toast.makeText(getApplicationContext(), "INVALID DAY.", Toast.LENGTH_LONG).show();
+
+                if(!(slotNumber.matches(""))) {
+                    if (goal.equals("Saturday")) {
+                        if (!(appointmentPurpose.matches(""))) {
+                            BackgroundTask backgroundTask = new BackgroundTask();
+                            backgroundTask.execute();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please specify the purpose of this appointment.", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "This day isn't a Saturday.. Please choose another date.", Toast.LENGTH_LONG).show();
+
+                    }
+                   
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please choose a certain timing.", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -404,7 +422,7 @@ public class StudentSetAppointmentSaturday extends Activity {
         protected String doInBackground(String... params) {
 
             try {
-                String setAppointment_URL = "http://192.168.1.5/faculty_scheduler/setAppointment.php";
+                String setAppointment_URL = "http://192.168.1.8/faculty_scheduler/setAppointment.php";
                 URL url = new URL(setAppointment_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -415,7 +433,7 @@ public class StudentSetAppointmentSaturday extends Activity {
                         URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8")+ "&" +
                         URLEncoder.encode("student_ID", "UTF-8") + "=" + URLEncoder.encode(student_ID, "UTF-8")+ "&" +
                         URLEncoder.encode("timing", "UTF-8") + "=" + URLEncoder.encode(timing, "UTF-8")+ "&" +
-
+                        URLEncoder.encode("appointmentPurpose", "UTF-8") + "=" + URLEncoder.encode(appointmentPurpose, "UTF-8")+ "&" +
                         URLEncoder.encode("dateApp", "UTF-8") + "=" + URLEncoder.encode(dateApp, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
