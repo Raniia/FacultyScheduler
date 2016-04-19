@@ -176,10 +176,11 @@ String appointmentPurpose;
                 Log.d("bossssssssiii", input);
                 Log.d("DATEEEEEEEEEEEEEEE IS", checkDate);
                 Log.d("DAAAAAAAAAAAAAAAAAAAAAY", goal);
+                appointmentPurpose = purpose.getText().toString();
 
-                if(!(slotNumber.matches(""))) {
+                if(!(slotNumber.isEmpty())) {
                     if (goal.equals("Saturday")) {
-                        if (!(appointmentPurpose.matches(""))) {
+                        if (!(appointmentPurpose.isEmpty())) {
                             BackgroundTask backgroundTask = new BackgroundTask();
                             backgroundTask.execute();
                         } else {
@@ -422,7 +423,7 @@ String appointmentPurpose;
         protected String doInBackground(String... params) {
 
             try {
-                String setAppointment_URL = "http://192.168.1.8/faculty_scheduler/setAppointment.php";
+                String setAppointment_URL = "http://192.168.1.2/faculty_scheduler/setAppointment.php";
                 URL url = new URL(setAppointment_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");

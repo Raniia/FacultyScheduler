@@ -126,8 +126,8 @@ public class StudentsHomepage extends Activity {
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.8/faculty_scheduler/getDoctors.php";
-            passStudentSessionURL = "http://192.168.1.8/faculty_scheduler/setAppointment.php";
+            viewDoctorsURL = "http://192.168.1.2/faculty_scheduler/getDoctors.php";
+            passStudentSessionURL = "http://192.168.1.2/faculty_scheduler/setAppointment.php";
             studentImage = "http://192.168.18/faculty_scheduler/images/" + student_picture ;
             Log.i("The URL is", passStudentSessionURL);
 
@@ -199,23 +199,6 @@ public class StudentsHomepage extends Activity {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -223,7 +206,7 @@ public class StudentsHomepage extends Activity {
             this.bmImage = bmImage;
         }
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay ="http://192.168.1.8/faculty_scheduler/studentAvatars/" + student_picture ;
+            String urldisplay ="http://192.168.1.2/faculty_scheduler/studentAvatars/" + student_picture ;
 
             Bitmap mIcon = null;
             try {
