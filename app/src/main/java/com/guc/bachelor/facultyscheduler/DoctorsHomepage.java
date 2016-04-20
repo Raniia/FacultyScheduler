@@ -259,10 +259,16 @@ if (result.contains("SaturdayfirstSlot")) {
 
     doctorAppointments = result;
 
-    Intent intent = new Intent(context, DoctorsAppointments.class);
-    intent.putExtra("doctorsAppointments", doctorAppointments);
-    startActivity(intent);
+    if(!doctorAppointments.contains("doctor_ID")) {
+        Toast.makeText(getApplicationContext(), "You have no appointments.", Toast.LENGTH_LONG).show();
 
+    }
+    else {
+
+        Intent intent = new Intent(context, DoctorsAppointments.class);
+        intent.putExtra("doctorsAppointments", doctorAppointments);
+        startActivity(intent);
+    }
             }
 
 

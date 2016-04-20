@@ -1,16 +1,52 @@
 package com.guc.bachelor.facultyscheduler;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-public class DoctorsAppointments extends ActionBarActivity {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class DoctorsAppointments extends Activity {
+    String json_stringAllAppointmentsofDoctor;
+    JSONObject object;
+    JSONArray jsonArray;
+    ListView doctorsListView;
+    Context context = this;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctors_appointments);
+
+        doctorsListView = (ListView) findViewById(R.id.listView);
+
+
+        json_stringAllAppointmentsofDoctor = getIntent().getExtras().getString("doctorsAppointments");
+    try {
+    object = new JSONObject(json_stringAllAppointmentsofDoctor);
+        jsonArray= object.getJSONArray("doctorsAppointments");
+
+
+        int count = 0;
+        String doctor_name;
+
+        while (count < jsonArray.length()) {
+            JSONObject JO = jsonArray.getJSONObject(count);
+
+
+        }
+
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
     }
 
     @Override
