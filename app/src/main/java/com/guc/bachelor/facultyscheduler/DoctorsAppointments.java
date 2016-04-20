@@ -1,22 +1,22 @@
 package com.guc.bachelor.facultyscheduler;
 
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class SlotDetails extends AppCompatActivity {
+public class DoctorsAppointments extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_slot_details);
+        setContentView(R.layout.activity_doctors_appointments);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_slot_details, menu);
+        getMenuInflater().inflate(R.menu.menu_doctors_appointments, menu);
         return true;
     }
 

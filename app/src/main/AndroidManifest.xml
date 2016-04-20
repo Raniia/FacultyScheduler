@@ -44,14 +44,6 @@
             android:label="@string/title_activity_view_list_doctors" >
         </activity>
         <activity
-            android:name=".DoctorsSchedule"
-            android:label="@string/title_activity_doctors_schedule" >
-        </activity>
-        <activity
-            android:name=".SlotDetails"
-            android:label="@string/title_activity_slot_details" >
-        </activity>
-        <activity
             android:name=".ScheduleOfDoctors"
             android:label="@string/title_activity_schedule_of_doctors" >
         </activity>
@@ -68,12 +60,12 @@
             android:label="@string/title_activity_doctor_edit_schedule" >
         </activity>
         <activity
-            android:name=".osama"
-            android:label="@string/title_activity_osama" >
-        </activity>
-        <activity
             android:name=".TabbedDoctorEditSchedule"
             android:label="@string/title_activity_tabbed" >
+        </activity>
+        <activity
+            android:name=".DoctorsAppointments"
+            android:label="@string/title_activity_doctors_appointments" >
         </activity>
     </application>
 
