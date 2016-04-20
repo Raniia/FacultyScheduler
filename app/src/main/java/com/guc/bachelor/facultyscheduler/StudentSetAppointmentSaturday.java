@@ -423,7 +423,7 @@ String appointmentPurpose;
         protected String doInBackground(String... params) {
 
             try {
-                String setAppointment_URL = "http://192.168.1.2/faculty_scheduler/setAppointment.php";
+                String setAppointment_URL = "http://192.168.1.23/faculty_scheduler/setAppointment.php";
                 URL url = new URL(setAppointment_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");

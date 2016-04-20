@@ -64,6 +64,10 @@
             android:label="@string/title_activity_tabbed" >
         </activity>
         <activity
+            android:name=".DoctorsAppointmentsPending"
+            android:label="@string/title_activity_doctors_appointments" >
+        </activity>
+        <activity
             android:name=".DoctorsAppointments"
             android:label="@string/title_activity_doctors_appointments" >
         </activity>

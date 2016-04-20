@@ -33,6 +33,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class DoctorsHomepage extends Activity {
+    String doctorAppointments;
     String scheduleOfDoctor;
     String json_string;
     TextView doctorID;
@@ -111,8 +112,9 @@ public class DoctorsHomepage extends Activity {
     }
 
     public void doctorViewSchedule(View view) {
+        String method = "doctorViewSchedule";
         BackgroundTask backgroundTask = new BackgroundTask(this);
-        backgroundTask.execute();
+        backgroundTask.execute(method, doctor_ID);
     }
 
 
@@ -142,7 +144,7 @@ public class DoctorsHomepage extends Activity {
 
 
 
-    class BackgroundTask extends AsyncTask<Void, Void, String> {
+    class BackgroundTask extends AsyncTask<String, Void, String> {
         Context ctx;
 
         BackgroundTask(Context ctx) {
@@ -152,50 +154,88 @@ public class DoctorsHomepage extends Activity {
 
 
         String viewMySchedule_URL;
-
+String viewMyPendingAppointments_URL;
 
         protected void onPreExecute() {
-            viewMySchedule_URL = "http://192.168.1.2/faculty_scheduler/doctorViewMySchedule.php";
-
+            viewMySchedule_URL = "http://192.168.1.23/faculty_scheduler/doctorViewMySchedule.php";
+            viewMyPendingAppointments_URL = "http://192.168.1.23/faculty_scheduler/getDoctorsAppointments.php";
         }
 
 
         @Override
-        protected String doInBackground(Void... params) {
-            try {
-                URL url = new URL(viewMySchedule_URL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                OutputStream OS = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
-                String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
-                bufferedWriter.write(data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                OS.close();
-                InputStream IS = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
-                String response = "";
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    response += line;
+        protected String doInBackground(String... params) {
+            String method = params[0];
+            if (method.equals("doctorViewSchedule")) {
+                String doctor_ID = params[1];
+                try {
+                    URL url = new URL(viewMySchedule_URL);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    OutputStream OS = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                    String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
+                    bufferedWriter.write(data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    OS.close();
+                    InputStream IS = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                    String response = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+
+                    Log.d("THE", "DOCTOR ID is: " + response);
+
+
+                    bufferedReader.close();
+                    IS.close();
+                    httpURLConnection.disconnect();
+                    return response;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-                Log.d("THE", "DOCTOR ID is: " + response);
-
-
-                bufferedReader.close();
-                IS.close();
-                httpURLConnection.disconnect();
-                return response;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
+            else if(method.equals("doctorsPendingAppointments")) {
+                String doctor_ID = params[1];
+
+                try {
+                    URL url = new URL(viewMySchedule_URL);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    OutputStream OS = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                    String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
+                    bufferedWriter.write(data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    OS.close();
+                    InputStream IS = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                    String response = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+
+                    bufferedReader.close();
+                    IS.close();
+                    httpURLConnection.disconnect();
+                    return response;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             return null;
         }
 
@@ -205,39 +245,30 @@ public class DoctorsHomepage extends Activity {
         }
 
         protected void onPostExecute(String result) {
+if (result.contains("SaturdayfirstSlot")) {
+    scheduleOfDoctor = result;
 
-            scheduleOfDoctor = result;
 
+    Intent intent = new Intent(context, doctorsPersonalSchedule.class);
+    intent.putExtra("scheduleOfDoctor", scheduleOfDoctor);
 
-                Intent intent = new Intent(context, doctorsPersonalSchedule.class);
-            intent.putExtra("scheduleOfDoctor", scheduleOfDoctor);
+    startActivity(intent);
+}
 
-            startActivity(intent);
+            else if (result.contains("doctorsAppointments")){
 
+    doctorAppointments = result;
+
+    Intent intent = new Intent(context, DoctorsAppointments.class);
+    intent.putExtra("doctorsAppointments", doctorAppointments);
+    startActivity(intent);
+
+            }
 
 
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -259,7 +290,7 @@ public class DoctorsHomepage extends Activity {
             this.bmImage = bmImage;
         }
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay ="http://192.168.1.2/faculty_scheduler/doctorAvatars/" + doctor_picture ;
+            String urldisplay ="http://192.168.1.23/faculty_scheduler/doctorAvatars/" + doctor_picture ;
 
             Bitmap mIcon = null;
             try {
