@@ -2,6 +2,7 @@ package com.guc.bachelor.facultyscheduler;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -47,7 +48,7 @@ public class DoctorsAppointmentsPending extends Activity {
     AppointmentsPendingAdapter appointmentsAdapter;
 
 
-
+String doctorAppointments;
 
 
     String doctor_ID = DoctorsHomepage.storeDoctorID;
@@ -194,8 +195,40 @@ public class DoctorsAppointmentsPending extends Activity {
 
                     //Appointments tobeRemoved = (Appointments)appointmentsAdapter.getItem(position);
                         //appointmentsAdapter.remove(tobeRemoved);
-                       Toast.makeText(getContext(), studentIDString + " " + timingString + " " + dateString + " APPROVED", Toast.LENGTH_SHORT).show();
+                       Toast.makeText(getContext(),"APPROVED", Toast.LENGTH_SHORT).show();
 
+
+                    }
+                });
+
+
+                appointmentsHolder.disapprove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RelativeLayout t1 = (RelativeLayout) v.getParent();
+                        // TableRow t1 = (TableRow) v.getParent();
+
+
+                        TextView st = (TextView) t1.findViewById(R.id.studentID);
+                        TextView ti =  (TextView) t1.findViewById(R.id.timeApp);
+                        TextView dat= (TextView) t1.findViewById(R.id.dateofApp);
+
+
+                        studentIDString = st.getText().toString();
+                        timingString = ti.getText().toString();
+                        dateString = dat.getText().toString();
+
+
+                        String method = "disapprovePending";
+                        BackgroundTask backgroundTask = new BackgroundTask(context);
+                        backgroundTask.execute(method, studentIDString, timingString, dateString, doctor_ID);
+
+                        list.remove(getItem(position));
+                        AppointmentsPendingAdapter.this.notifyDataSetChanged();
+
+                        //Appointments tobeRemoved = (Appointments)appointmentsAdapter.getItem(position);
+                        //appointmentsAdapter.remove(tobeRemoved);
+                        Toast.makeText(getContext(), "DISAPPROVED", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -238,16 +271,11 @@ public class DoctorsAppointmentsPending extends Activity {
 
 
 
-
-
-
-
-
-
-
-
-
-
+    public void doctorsAppointments(View view) {
+        String method = "doctorsAppointments";
+        BackgroundTask backgroundTask = new BackgroundTask(this);
+        backgroundTask.execute(method, doctor_ID);
+    }
 
 
 
@@ -272,10 +300,13 @@ public class DoctorsAppointmentsPending extends Activity {
 
         String approvePending_URL;
         String disapprovePending_URL;
+        String viewMyAppointments_URL;
 
         protected void onPreExecute() {
             approvePending_URL = "http://192.168.1.3/faculty_scheduler/doctorApprovedAppointment.php";
             disapprovePending_URL = "http://192.168.1.3/faculty_scheduler/doctorDisapprovedPending.php";
+            viewMyAppointments_URL = "http://192.168.1.3/faculty_scheduler/getDoctorsAppointments.php";
+
         }
 
         @Override
@@ -374,6 +405,41 @@ public class DoctorsAppointmentsPending extends Activity {
                     e.printStackTrace();
                 }
             }
+
+            else if (method.equals("doctorsAppointments")) {
+                String doctor_ID = params[1];
+
+                try {
+                    URL url = new URL(viewMyAppointments_URL);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    OutputStream OS = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                    String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
+                    bufferedWriter.write(data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    OS.close();
+                    InputStream IS = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                    String response = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+
+                    bufferedReader.close();
+                    IS.close();
+                    httpURLConnection.disconnect();
+                    return response;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             return null;
         }
 
@@ -384,6 +450,21 @@ public class DoctorsAppointmentsPending extends Activity {
 
 
         protected void onPostExecute(String result) {
+
+            if (result.contains("appointmentSlot")) {
+
+                doctorAppointments = result;
+
+                if (!doctorAppointments.contains("doctor_ID")) {
+                    Toast.makeText(getApplicationContext(), "You have no appointments.", Toast.LENGTH_LONG).show();
+
+                } else {
+
+                    Intent intent = new Intent(context, DoctorsAppointments.class);
+                    intent.putExtra("doctorsAppointments", doctorAppointments);
+                    startActivity(intent);
+                }
+            }
 
 
 

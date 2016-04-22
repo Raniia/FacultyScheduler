@@ -181,6 +181,7 @@
                 android:layout_height="match_parent"
                 android:text="My Appointments"
                 android:id="@+id/myAppointments"
+                android:onClick="studentsAppointments"
                 android:background="@drawable/loginselector"
                 android:textColor="#FFFFFF"
                  />

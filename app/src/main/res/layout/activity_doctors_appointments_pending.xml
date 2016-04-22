@@ -34,6 +34,7 @@
         android:id="@+id/viewmyAppointments"
         android:layout_alignParentBottom="true"
         android:background="@drawable/loginselector"
+        android:onClick="doctorsAppointments"
         android:textColor="#FFFFFF"
         android:layout_alignParentEnd="true"
         />

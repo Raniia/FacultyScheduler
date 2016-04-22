@@ -160,6 +160,7 @@ public class DoctorsHomepage extends Activity {
         protected void onPreExecute() {
             viewMySchedule_URL = "http://192.168.1.3/faculty_scheduler/doctorViewMySchedule.php";
             viewMyAppointments_URL = "http://192.168.1.3/faculty_scheduler/getDoctorsAppointments.php";
+
         }
 
         @Override
@@ -260,6 +261,7 @@ public class DoctorsHomepage extends Activity {
 
                 doctorAppointments = result;
 
+
                 if (!doctorAppointments.contains("doctor_ID")) {
                     Toast.makeText(getApplicationContext(), "You have no appointments.", Toast.LENGTH_LONG).show();
 
@@ -269,10 +271,10 @@ public class DoctorsHomepage extends Activity {
                     intent.putExtra("doctorsAppointments", doctorAppointments);
                     startActivity(intent);
                 }
+
+
             }
-
-
-        }
+            }
 
     }
 
