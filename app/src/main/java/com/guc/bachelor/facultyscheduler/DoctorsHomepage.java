@@ -71,7 +71,7 @@ public class DoctorsHomepage extends Activity {
             jsonArray = object.getJSONArray("doctor_login_details");
 
 
-            doctor_ID= jsonArray.getJSONObject(0).getString("doctor_ID");
+            doctor_ID = jsonArray.getJSONObject(0).getString("doctor_ID");
             doctorID = (TextView) findViewById(R.id.doctor_ID);
             doctorID.setText(doctor_ID);
             storeDoctorID = doctor_ID;
@@ -86,7 +86,7 @@ public class DoctorsHomepage extends Activity {
             doctorEmail = (TextView) findViewById(R.id.doctor_email);
             doctorEmail.setText(doctor_email);
 
-            doctor_department= jsonArray.getJSONObject(0).getString("doctor_department");
+            doctor_department = jsonArray.getJSONObject(0).getString("doctor_department");
             doctorDepartment = (TextView) findViewById(R.id.doctor_department);
             doctorDepartment.setText(doctor_department);
 
@@ -103,7 +103,6 @@ public class DoctorsHomepage extends Activity {
             new DownloadImageTask(avatar).execute();
 
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -117,7 +116,11 @@ public class DoctorsHomepage extends Activity {
         backgroundTask.execute(method, doctor_ID);
     }
 
-
+    public void doctorsAppointments(View view) {
+        String method = "doctorsAppointments";
+        BackgroundTask backgroundTask = new BackgroundTask(this);
+        backgroundTask.execute(method, doctor_ID);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -142,8 +145,6 @@ public class DoctorsHomepage extends Activity {
     }
 
 
-
-
     class BackgroundTask extends AsyncTask<String, Void, String> {
         Context ctx;
 
@@ -154,13 +155,12 @@ public class DoctorsHomepage extends Activity {
 
 
         String viewMySchedule_URL;
-String viewMyPendingAppointments_URL;
+        String viewMyAppointments_URL;
 
         protected void onPreExecute() {
-            viewMySchedule_URL = "http://192.168.1.23/faculty_scheduler/doctorViewMySchedule.php";
-            viewMyPendingAppointments_URL = "http://192.168.1.23/faculty_scheduler/getDoctorsAppointments.php";
+            viewMySchedule_URL = "http://192.168.1.3/faculty_scheduler/doctorViewMySchedule.php";
+            viewMyAppointments_URL = "http://192.168.1.3/faculty_scheduler/getDoctorsAppointments.php";
         }
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -200,13 +200,11 @@ String viewMyPendingAppointments_URL;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-
-            else if(method.equals("doctorsPendingAppointments")) {
+            } else if (method.equals("doctorsAppointments")) {
                 String doctor_ID = params[1];
 
                 try {
-                    URL url = new URL(viewMySchedule_URL);
+                    URL url = new URL(viewMyAppointments_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setDoOutput(true);
@@ -244,31 +242,33 @@ String viewMyPendingAppointments_URL;
             super.onProgressUpdate(values);
         }
 
+
         protected void onPostExecute(String result) {
-if (result.contains("SaturdayfirstSlot")) {
-    scheduleOfDoctor = result;
 
 
-    Intent intent = new Intent(context, doctorsPersonalSchedule.class);
-    intent.putExtra("scheduleOfDoctor", scheduleOfDoctor);
+            Log.d("RESUUUUUUUUUUULT IS", result);
+            if (result.contains("SaturdayfirstSlot")) {
+                scheduleOfDoctor = result;
 
-    startActivity(intent);
-}
+                Intent intent = new Intent(context, doctorsPersonalSchedule.class);
+                intent.putExtra("scheduleOfDoctor", scheduleOfDoctor);
+                startActivity(intent);
 
-            else if (result.contains("doctorsAppointments")){
+            }
 
-    doctorAppointments = result;
+            else if (result.contains("appointmentSlot")) {
 
-    if(!doctorAppointments.contains("doctor_ID")) {
-        Toast.makeText(getApplicationContext(), "You have no appointments.", Toast.LENGTH_LONG).show();
+                doctorAppointments = result;
 
-    }
-    else {
+                if (!doctorAppointments.contains("doctor_ID")) {
+                    Toast.makeText(getApplicationContext(), "You have no appointments.", Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(context, DoctorsAppointments.class);
-        intent.putExtra("doctorsAppointments", doctorAppointments);
-        startActivity(intent);
-    }
+                } else {
+
+                    Intent intent = new Intent(context, DoctorsAppointments.class);
+                    intent.putExtra("doctorsAppointments", doctorAppointments);
+                    startActivity(intent);
+                }
             }
 
 
@@ -277,26 +277,15 @@ if (result.contains("SaturdayfirstSlot")) {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
+
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay ="http://192.168.1.23/faculty_scheduler/doctorAvatars/" + doctor_picture ;
+            String urldisplay = "http://192.168.1.3/faculty_scheduler/doctorAvatars/" + doctor_picture;
 
             Bitmap mIcon = null;
             try {
@@ -313,8 +302,6 @@ if (result.contains("SaturdayfirstSlot")) {
             bmImage.setImageBitmap(result);
         }
     }
-
-
 
 
 }

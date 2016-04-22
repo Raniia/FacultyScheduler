@@ -4,7 +4,7 @@ package com.guc.bachelor.facultyscheduler;
  * Created by FRRR on 03/25/2016.
  */
 public class Student {
-    private int student_ID;
+    private String student_ID;
     private String student_name;
     private String student_email;
     private String student_password;
@@ -12,7 +12,7 @@ public class Student {
     private String student_major;
     private String student_group;
 
-    public Student(int student_ID, String student_name, String student_email, String student_faculty, String student_major, String student_group) {
+    public Student(String student_ID, String student_name, String student_email, String student_faculty, String student_major, String student_group) {
         this.setStudent_ID(student_ID);
         this.setStudent_name(student_name);
         this.setStudent_email(student_email);
@@ -20,11 +20,11 @@ public class Student {
         this.setStudent_major(student_major);
         this.setStudent_group(student_group);
     }
-    public int getStudent_ID() {
+    public String getStudent_ID() {
         return student_ID;
     }
 
-    public void setStudent_ID(int student_ID) {
+    public void setStudent_ID(String student_ID) {
         this.student_ID = student_ID;
     }
 

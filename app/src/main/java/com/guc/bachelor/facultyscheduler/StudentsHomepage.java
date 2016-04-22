@@ -66,11 +66,13 @@ public class StudentsHomepage extends Activity {
 
             jsonArray = object.getJSONArray("student_login_details");
 
-            String student_group = jsonArray.getJSONObject(0).getString("student_group");
+            //String student_group = jsonArray.getJSONObject(0).getString("student_group");
 
             String student_ID = jsonArray.getJSONObject(0).getString("student_ID");
             studentID = (TextView) findViewById(R.id.student_ID);
-            studentID.setText( student_group + student_ID );
+            //studentID.setText( student_group + student_ID );
+            studentID.setText(student_ID );
+
             storeStudentID = student_ID;
             Log.d("STORE STUDENT ID", storeStudentID);
 
@@ -126,9 +128,9 @@ public class StudentsHomepage extends Activity {
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.23/faculty_scheduler/getDoctors.php";
-            passStudentSessionURL = "http://192.168.1.23/faculty_scheduler/setAppointment.php";
-            studentImage = "http://192.168.1.23/faculty_scheduler/images/" + student_picture ;
+            viewDoctorsURL = "http://192.168.1.3/faculty_scheduler/getDoctors.php";
+            passStudentSessionURL = "http://192.168.1.3/faculty_scheduler/setAppointment.php";
+            studentImage = "http://192.168.1.3/faculty_scheduler/images/" + student_picture ;
             Log.i("The URL is", passStudentSessionURL);
 
         }
@@ -197,7 +199,7 @@ public class StudentsHomepage extends Activity {
             this.bmImage = bmImage;
         }
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay ="http://192.168.1.23/faculty_scheduler/studentAvatars/" + student_picture ;
+            String urldisplay ="http://192.168.1.3/faculty_scheduler/studentAvatars/" + student_picture ;
 
             Bitmap mIcon = null;
             try {

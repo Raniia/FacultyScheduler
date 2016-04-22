@@ -190,6 +190,7 @@
                     android:background="@drawable/loginselector"
                     android:textColor="#FFFFFF"
                     android:layout_alignParentEnd="true"
+                    android:onClick="doctorsAppointments"
                     />
             </TableRow>
         </TableLayout>
