@@ -1,9 +1,11 @@
 package com.guc.bachelor.facultyscheduler;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -181,8 +183,54 @@ String appointmentPurpose;
                 if(!(slotNumber.isEmpty())) {
                     if (goal.equals("Saturday")) {
                         if (!(appointmentPurpose.isEmpty())) {
+                            String method = "setAppointmentSaturdaySecond";
                             BackgroundTask backgroundTask = new BackgroundTask();
-                            backgroundTask.execute();
+                            backgroundTask.execute(method);
+
+
+
+
+                            AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+
+                            // Setting Dialog Title
+                            alertDialog.setTitle("Appointment Booked.");
+
+                            // Setting Dialog Message
+                            alertDialog.setMessage("Continue to your appointments...");
+
+                            // Setting Icon to Dialog
+                            alertDialog.setIcon(R.drawable.tick);
+
+
+                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Write your code here to execute after dialog closed
+                                    String method = "showStudentsAppointments";
+                                    BackgroundTask backgroundTask = new BackgroundTask();
+                                    backgroundTask.execute(method);
+                                   // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            // Showing Alert Message
+                            alertDialog.show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         } else {
                             Toast.makeText(getApplicationContext(), "Please specify the purpose of this appointment.", Toast.LENGTH_LONG).show();
                         }
@@ -421,21 +469,60 @@ String appointmentPurpose;
         }
 
         protected String doInBackground(String... params) {
+            String method = params[0];
+            if (method.equals("setAppointmentSaturdaySecond")) {
+                try {
 
-            try {
-                String setAppointment_URL = "http://192.168.1.3/faculty_scheduler/setAppointment.php";
-                URL url = new URL(setAppointment_URL);
+                    String setAppointment_URL = "http://192.168.1.3/faculty_scheduler/setAppointment.php";
+                    URL url = new URL(setAppointment_URL);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    OutputStream OS = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                    String data = URLEncoder.encode("slotNumber", "UTF-8") + "=" + URLEncoder.encode(slotNumber, "UTF-8") + "&" +
+                            URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8") + "&" +
+                            URLEncoder.encode("student_ID", "UTF-8") + "=" + URLEncoder.encode(student_ID, "UTF-8") + "&" +
+                            URLEncoder.encode("timing", "UTF-8") + "=" + URLEncoder.encode(timing, "UTF-8") + "&" +
+                            URLEncoder.encode("appointmentPurpose", "UTF-8") + "=" + URLEncoder.encode(appointmentPurpose, "UTF-8") + "&" +
+                            URLEncoder.encode("dateApp", "UTF-8") + "=" + URLEncoder.encode(dateApp, "UTF-8");
+                    bufferedWriter.write(data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    OS.close();
+                    InputStream IS = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                    String response = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+
+                    Log.d("THE", "STUDENT ID is: " + response);
+
+
+                    bufferedReader.close();
+                    IS.close();
+                    httpURLConnection.disconnect();
+                    return response;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            else if (method.equals("showStudentsAppointments")){
+                try{
+                String  viewMyAppointments_URL = "http://192.168.1.3/faculty_scheduler/getStudentsAppointments.php";
+                URL url = new URL(viewMyAppointments_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 OutputStream OS = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
-                String data = URLEncoder.encode("slotNumber", "UTF-8") + "=" + URLEncoder.encode(slotNumber, "UTF-8") + "&" +
-                        URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8")+ "&" +
-                        URLEncoder.encode("student_ID", "UTF-8") + "=" + URLEncoder.encode(student_ID, "UTF-8")+ "&" +
-                        URLEncoder.encode("timing", "UTF-8") + "=" + URLEncoder.encode(timing, "UTF-8")+ "&" +
-                        URLEncoder.encode("appointmentPurpose", "UTF-8") + "=" + URLEncoder.encode(appointmentPurpose, "UTF-8")+ "&" +
-                        URLEncoder.encode("dateApp", "UTF-8") + "=" + URLEncoder.encode(dateApp, "UTF-8");
+                String data = URLEncoder.encode("student_ID", "UTF-8") + "=" + URLEncoder.encode(student_ID, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -462,6 +549,7 @@ String appointmentPurpose;
                 e.printStackTrace();
             }
 
+            }
             return null;
         }
 
@@ -471,17 +559,14 @@ String appointmentPurpose;
         }
 
         protected void onPostExecute(String result) {
-
-            if (!(textView79.getText().toString().equals("9") || textView79.getText().toString().equals("10") || textView79.getText().toString().equals("11") || textView79.getText().toString().equals("12") || textView79.getText().toString().equals("13") || textView79.getText().toString().equals("14") )) {
-                Toast.makeText(getApplicationContext(), "Please specify a particular slot.", Toast.LENGTH_LONG).show();
-
-
-            } else {
+            if (result.contains("timing")) {
+                String myAppointments = result;
                 Intent intent = new Intent(context, StudentsAppointments.class);
+                intent.putExtra("studentsAppointments", myAppointments);
                 startActivity(intent);
 
-            }
 
+            }
         }
 
     }
