@@ -145,6 +145,16 @@ public class ScheduleOfDoctors extends Activity {
                 textview14.setBackground(getResources().getDrawable(R.drawable.free_slot));
                 textview14.setTextSize(20);
                 textview14.setText("Add Appointment");
+
+                textview14.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String method = "setAppointmentSaturdaygap1";
+                        BackgroundTask backgroundTask = new BackgroundTask();
+                        backgroundTask.execute(method, doctor_ID);
+                    }
+                });
+
             }
 
 
@@ -160,8 +170,9 @@ public class ScheduleOfDoctors extends Activity {
                 textview15.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String method = "setAppointmentSaturdaySecond";
                         BackgroundTask backgroundTask = new BackgroundTask();
-                        backgroundTask.execute();
+                        backgroundTask.execute(method,doctor_ID);
                     }
                 });
             }
@@ -281,62 +292,69 @@ public class ScheduleOfDoctors extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-
-            try {
-                String setAppointmentSaturdaySecond_URL = "http://192.168.1.3/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
-                URL url = new URL(setAppointmentSaturdaySecond_URL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                OutputStream OS = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
-                String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
-                bufferedWriter.write(data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                OS.close();
-                InputStream IS = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
-                String response = "";
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    response += line;
-                }
-
-                Log.d("doctor id is", "Response is: " + response);
-
-
-
+            String method = params[0];
+            if (method.equals("setAppointmentSaturdaySecond")) {
+                String doctor_ID = params[1];
 
                 try {
-                    saturdaySecondSlotAppointments = response;
-                    JSONObject object = new JSONObject(saturdaySecondSlotAppointments);
-                    jsonArray = object.getJSONArray("saturdaySecondSlotAppointments");
+                    String setAppointmentSaturdaySecond_URL = "http://192.168.1.3/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
+                    URL url = new URL(setAppointmentSaturdaySecond_URL);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    OutputStream OS = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                    String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
+                    bufferedWriter.write(data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    OS.close();
+                    InputStream IS = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                    String response = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
 
-                    ninthFree = jsonArray.getJSONObject(0).getString("ninthFree");
-                    tenthFree = jsonArray.getJSONObject(0).getString("tenthFree");
-                    eleventhFree = jsonArray.getJSONObject(0).getString("eleventhFree");
-                    twelfthFree = jsonArray.getJSONObject(0).getString("twelfthFree");
-                    thirteenthFree = jsonArray.getJSONObject(0).getString("thirteenthFree");
-                    fourteenthFree = jsonArray.getJSONObject(0).getString("fourteenthFree");
+                    Log.d("doctor id is", "Response is: " + response);
 
 
-                } catch (JSONException e) {
+                    try {
+                        saturdaySecondSlotAppointments = response;
+                        JSONObject object = new JSONObject(saturdaySecondSlotAppointments);
+                        jsonArray = object.getJSONArray("saturdaySecondSlotAppointments");
+
+                        ninthFree = jsonArray.getJSONObject(0).getString("ninthFree");
+                        tenthFree = jsonArray.getJSONObject(0).getString("tenthFree");
+                        eleventhFree = jsonArray.getJSONObject(0).getString("eleventhFree");
+                        twelfthFree = jsonArray.getJSONObject(0).getString("twelfthFree");
+                        thirteenthFree = jsonArray.getJSONObject(0).getString("thirteenthFree");
+                        fourteenthFree = jsonArray.getJSONObject(0).getString("fourteenthFree");
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    bufferedReader.close();
+                    IS.close();
+                    httpURLConnection.disconnect();
+                    return response;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+            else if (method.equals("setAppointmentSaturdaygap1")) {
+                String doctor_ID = params[1];
 
-
-
-
-                bufferedReader.close();
-                IS.close();
-                httpURLConnection.disconnect();
-                return response;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+              //  try {
+                //    String setAppointmentSaturdaygap1_URL = "http://192.168.1.3/faculty_scheduler/studentSetAppointmentSaturdaygap1.php";
+                  //  URL url = new URL(setAppointmentSaturdaygap1_URL);
             }
 
             return null;
@@ -349,18 +367,19 @@ public class ScheduleOfDoctors extends Activity {
 
         protected void onPostExecute(String result) {
 
-            if (ninthFree.equals("0") && tenthFree.equals("0") && eleventhFree.equals("0") && twelfthFree.equals("0") && thirteenthFree.equals("0") && fourteenthFree.equals("0")) {
-                Toast.makeText(getApplicationContext(), "No free timings available. Choose another time.", Toast.LENGTH_LONG).show();
+            if (result.contains("ninthFree")) {
+                if (ninthFree.equals("0") && tenthFree.equals("0") && eleventhFree.equals("0") && twelfthFree.equals("0") && thirteenthFree.equals("0") && fourteenthFree.equals("0")) {
+                    Toast.makeText(getApplicationContext(), "No free timings available. Choose another time.", Toast.LENGTH_LONG).show();
 
+
+                } else {
+                    Intent intent = new Intent(context, StudentSetAppointmentSaturday.class);
+                    intent.putExtra("saturdaySecondSlotAppointments", saturdaySecondSlotAppointments);
+                    startActivity(intent);
+
+                }
 
             }
-            else {
-                Intent intent = new Intent(context, StudentSetAppointmentSaturday.class);
-                intent.putExtra("saturdaySecondSlotAppointments", saturdaySecondSlotAppointments);
-                startActivity(intent);
-
-            }
-
         }
 
     }

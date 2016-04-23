@@ -53,6 +53,7 @@ public class StudentsAppointments extends Activity {
             String timing;
             String date;
             String description;
+            String present;
 
             while (count < jsonArray.length()) {
                 JSONObject JO = jsonArray.getJSONObject(count);
@@ -60,8 +61,11 @@ public class StudentsAppointments extends Activity {
                 timing = JO.getString("timing");
                 date = JO.getString("dateAppointment");
                 description = JO.getString("description");
+               present = JO.getString("present");
+
+               // Log.d("preseeeeeeeeeeeeent of docotor", present);
                 //  doctor_ID = JO.getString("doctor_ID");
-                Appointments appointments = new Appointments(doctor_id,date,timing, description);
+                Appointments appointments = new Appointments(doctor_id,date,timing, description, present);
                 appointmentsAdapter.add(appointments);
                 count++;
 
@@ -187,6 +191,7 @@ public class StudentsAppointments extends Activity {
                 appointmentsHolder.timing = (TextView) row.findViewById(R.id.timeApp);
                 appointmentsHolder.date = (TextView) row.findViewById(R.id.dateofApp);
                 appointmentsHolder.description= (TextView) row.findViewById(R.id.description);
+                appointmentsHolder.present = (TextView) row.findViewById(R.id.available);
                 row.setTag(appointmentsHolder);
 
             } else {
@@ -197,6 +202,17 @@ public class StudentsAppointments extends Activity {
             appointmentsHolder.timing.setText(appointments.getTiming());
             appointmentsHolder.date.setText(appointments.getDateAppointment());
             appointmentsHolder.description.setText(appointments.getDescription());
+           // appointmentsHolder.present.setText(appointments.getPresent());
+            if(appointments.getPresent().equals("1")) {
+                appointmentsHolder.present.setText("Available");
+                appointmentsHolder.present.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.available,0,0,0);
+            }
+            else {
+                appointmentsHolder.present.setText(" Not Available");
+                appointmentsHolder.present.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.notavailable, 0, 0, 0);
+
+
+            }
             return row;
         }
 
@@ -206,6 +222,7 @@ public class StudentsAppointments extends Activity {
             TextView timing;
             TextView date;
             TextView description;
+            TextView present;
         }
 
 
