@@ -30,4 +30,8 @@
     <string name="title_activity_osama">osama</string>
     <string name="title_activity_tabbed">Tabbed</string>
     <string name="title_activity_doctors_appointments">DoctorsAppointments</string>
+    <string name="title_activity_test">test</string>
+    <string name="title_activity_student_set_appointment_saturday_second">
+        StudentSetAppointmentSaturdaySecond
+    </string>
 </resources>

@@ -158,8 +158,8 @@ public class DoctorsHomepage extends Activity {
         String viewMyAppointments_URL;
 
         protected void onPreExecute() {
-            viewMySchedule_URL = "http://192.168.1.3/faculty_scheduler/doctorViewMySchedule.php";
-            viewMyAppointments_URL = "http://192.168.1.3/faculty_scheduler/getDoctorsAppointments.php";
+            viewMySchedule_URL = "http://192.168.1.9/faculty_scheduler/doctorViewMySchedule.php";
+            viewMyAppointments_URL = "http://192.168.1.9/faculty_scheduler/getDoctorsAppointments.php";
 
         }
 
@@ -287,7 +287,7 @@ public class DoctorsHomepage extends Activity {
         }
 
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay = "http://192.168.1.3/faculty_scheduler/doctorAvatars/" + doctor_picture;
+            String urldisplay = "http://192.168.1.26/faculty_scheduler/doctorAvatars/" + doctor_picture;
 
             Bitmap mIcon = null;
             try {

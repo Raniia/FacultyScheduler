@@ -1,6 +1,9 @@
 package com.guc.bachelor.facultyscheduler;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +31,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ScheduleOfDoctors extends Activity {
 
@@ -69,7 +78,6 @@ public class ScheduleOfDoctors extends Activity {
     String Saturdaygap5;
 
 
-
     //Sunday
 
     TextView textview24;
@@ -103,21 +111,113 @@ public class ScheduleOfDoctors extends Activity {
     String Sundaygap5;
 
 
-
-
-
-
-
-
-
-
-
+    String datePassed;
+    static String finalDate;
     String doctor_ID;
+    String dayOfWeek;
+
+    static final int DATE_DIALOG_ID = 0;
+
+    // variables to save user selected date and time
+    private int mYear, mMonth, mDay;
+
+    Date date2;
+    private void updateDate(){
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(mYear).append("-")
+                .append(mMonth + 1).append("-")
+                .append(mDay).append("");
+
+
+        finalDate = stringBuilder.toString();
+
+
+    }
+
+    private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        // the callback received when the user "sets" the Date in the DatePickerDialog
+        public void onDateSet(DatePicker view, int yearSelected,
+                              int monthOfYear, int dayOfMonth) {
+            SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
+
+            Date date = new Date(yearSelected, monthOfYear, dayOfMonth - 1);
+
+            dayOfWeek = simpledateformat.format(date);
+
+
+            Log.d("DAY OF WEEK IS", dayOfWeek);
+            if (dayOfWeek.equals("Saturday")) {
+                mYear = yearSelected;
+                mMonth = monthOfYear;
+                mDay = dayOfMonth;
+
+
+
+                updateDate();
+
+
+                Date d = new Date(mYear-1900,mMonth,mDay);
+                SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                finalDate = inFormat.format(d);
+
+
+                Toast.makeText(getApplicationContext(), new StringBuilder().append("Date choosen is ").append(finalDate), Toast.LENGTH_SHORT).show();
+
+          //  Toast.makeText(getApplicationContext(), "Date selected is: " + mDay + "-" + mMonth + "-" + mYear, Toast.LENGTH_LONG).show();
+            //datePassed =  mYear + "-" + mMonth + "-" + mDay;
+
+                Log.d("daaaaaate", finalDate);
+
+            String method = "setAppointmentSaturdaySecond";
+            BackgroundTask backgroundTask = new BackgroundTask();
+            backgroundTask.execute(method,doctor_ID,finalDate);
+
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), "This day is not Saturday, Please choose another day.", Toast.LENGTH_LONG).show();
+
+            }
+        }
+    };
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this,
+                        mDateSetListener,
+                        mYear, mMonth, mDay);
+
+
+        }
+        return null;
+    }
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_of_doctors);
+
+
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+    // Date d = new Date(mYear,mMonth,mDay);
+       // SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        updateDate();
+       // finalDate = inFormat.format(d);
+
+
         json_string = getIntent().getExtras().getString("doctor_schedule");
         try {
             JSONObject object = new JSONObject(json_string);
@@ -149,6 +249,7 @@ public class ScheduleOfDoctors extends Activity {
                 textview14.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         String method = "setAppointmentSaturdaygap1";
                         BackgroundTask backgroundTask = new BackgroundTask();
                         backgroundTask.execute(method, doctor_ID);
@@ -170,9 +271,17 @@ public class ScheduleOfDoctors extends Activity {
                 textview15.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String method = "setAppointmentSaturdaySecond";
+                       /* String method = "setAppointmentSaturdaySecond";
                         BackgroundTask backgroundTask = new BackgroundTask();
-                        backgroundTask.execute(method,doctor_ID);
+                        backgroundTask.execute(method,doctor_ID);*/
+
+
+                        showDialog(DATE_DIALOG_ID);
+
+                        /*String method = "setAppointmentSaturdaySecond";
+                        BackgroundTask backgroundTask = new BackgroundTask();
+                        backgroundTask.execute(method,doctor_ID,datePassed);
+                        */
                     }
                 });
             }
@@ -282,6 +391,7 @@ public class ScheduleOfDoctors extends Activity {
         String twelfthFree;
         String thirteenthFree;
         String fourteenthFree;
+        String dateAppointment;
 
         @Override
         protected void onPreExecute() {
@@ -295,16 +405,18 @@ public class ScheduleOfDoctors extends Activity {
             String method = params[0];
             if (method.equals("setAppointmentSaturdaySecond")) {
                 String doctor_ID = params[1];
+                String datePassed = params[2];
 
                 try {
-                    String setAppointmentSaturdaySecond_URL = "http://192.168.1.3/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
+                    String setAppointmentSaturdaySecond_URL = "http://192.168.1.9/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
                     URL url = new URL(setAppointmentSaturdaySecond_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setDoOutput(true);
                     OutputStream OS = httpURLConnection.getOutputStream();
                     BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
-                    String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8");
+                    String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8")+ "&" +
+                            URLEncoder.encode("datePassed", "UTF-8") + "=" + URLEncoder.encode(datePassed, "UTF-8");
                     bufferedWriter.write(data);
                     bufferedWriter.flush();
                     bufferedWriter.close();
@@ -331,6 +443,8 @@ public class ScheduleOfDoctors extends Activity {
                         twelfthFree = jsonArray.getJSONObject(0).getString("twelfthFree");
                         thirteenthFree = jsonArray.getJSONObject(0).getString("thirteenthFree");
                         fourteenthFree = jsonArray.getJSONObject(0).getString("fourteenthFree");
+                        dateAppointment= jsonArray.getJSONObject(0).getString("dateAppointment");
+
 
 
                     } catch (JSONException e) {
@@ -348,13 +462,12 @@ public class ScheduleOfDoctors extends Activity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else if (method.equals("setAppointmentSaturdaygap1")) {
-                String doctor_ID = params[1];
+            } else if (method.equals("setAppointmentSaturdaygap1")) {
+              //  String doctor_ID = params[1];
 
-              //  try {
+                //  try {
                 //    String setAppointmentSaturdaygap1_URL = "http://192.168.1.3/faculty_scheduler/studentSetAppointmentSaturdaygap1.php";
-                  //  URL url = new URL(setAppointmentSaturdaygap1_URL);
+                //  URL url = new URL(setAppointmentSaturdaygap1_URL);
             }
 
             return null;
@@ -367,19 +480,25 @@ public class ScheduleOfDoctors extends Activity {
 
         protected void onPostExecute(String result) {
 
-            if (result.contains("ninthFree")) {
+            if (result.contains("dateAppointment")) {
                 if (ninthFree.equals("0") && tenthFree.equals("0") && eleventhFree.equals("0") && twelfthFree.equals("0") && thirteenthFree.equals("0") && fourteenthFree.equals("0")) {
                     Toast.makeText(getApplicationContext(), "No free timings available. Choose another time.", Toast.LENGTH_LONG).show();
 
 
                 } else {
-                    Intent intent = new Intent(context, StudentSetAppointmentSaturday.class);
+                    Intent intent = new Intent(context, StudentSetAppointmentSaturdaySecond.class);
                     intent.putExtra("saturdaySecondSlotAppointments", saturdaySecondSlotAppointments);
                     startActivity(intent);
 
                 }
+            }
+
+
+            else {
+                Toast.makeText(getApplicationContext(), "Free slots in this date is not yet set by the doctor, please choose an earlier date.", Toast.LENGTH_LONG).show();
 
             }
+
         }
 
     }

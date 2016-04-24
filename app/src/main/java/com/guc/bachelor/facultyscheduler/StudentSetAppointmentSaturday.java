@@ -147,6 +147,8 @@ String appointmentPurpose;
         tmonth = cal.get(Calendar.MONTH);
         tday = cal.get(Calendar.DAY_OF_MONTH);
 
+
+
         /** Display the current date in the TextView */
         updateDisplay();
 
@@ -473,7 +475,7 @@ String appointmentPurpose;
             if (method.equals("setAppointmentSaturdaySecond")) {
                 try {
 
-                    String setAppointment_URL = "http://192.168.1.3/faculty_scheduler/setAppointment.php";
+                    String setAppointment_URL = "http://192.168.1.9/faculty_scheduler/setAppointment.php";
                     URL url = new URL(setAppointment_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");

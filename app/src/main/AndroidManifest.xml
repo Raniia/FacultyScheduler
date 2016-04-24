@@ -71,6 +71,14 @@
             android:name=".DoctorsAppointments"
             android:label="@string/title_activity_doctors_appointments" >
         </activity>
+        <activity
+            android:name=".test"
+            android:label="@string/title_activity_test" >
+        </activity>
+        <activity
+            android:name=".StudentSetAppointmentSaturdaySecond"
+            android:label="@string/title_activity_student_set_appointment_saturday_second" >
+        </activity>
     </application>
 
 </manifest>

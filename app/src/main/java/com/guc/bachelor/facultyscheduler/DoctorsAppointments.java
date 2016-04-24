@@ -143,7 +143,7 @@ public void viewPendingAppointments(View view) {
 
         @Override
         protected void onPreExecute() {
-            viewMyPendingAppointments_URL = "http://192.168.1.3/faculty_scheduler/getDoctorsPendingAppointments.php";
+            viewMyPendingAppointments_URL = "http://192.168.1.9/faculty_scheduler/getDoctorsPendingAppointments.php";
         }
 
         @Override
