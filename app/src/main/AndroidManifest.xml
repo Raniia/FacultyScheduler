@@ -79,6 +79,10 @@
             android:name=".StudentSetAppointmentSaturdaySecond"
             android:label="@string/title_activity_student_set_appointment_saturday_second" >
         </activity>
+        <activity
+            android:name=".StudentSetAppointmentSaturdayGapOne"
+            android:label="@string/title_activity_student_set_appointment_saturday_gap_one" >
+        </activity>
     </application>
 
 </manifest>

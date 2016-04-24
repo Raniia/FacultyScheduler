@@ -303,9 +303,9 @@ String doctorAppointments;
         String viewMyAppointments_URL;
 
         protected void onPreExecute() {
-            approvePending_URL = "http://192.168.1.9/faculty_scheduler/doctorApprovedAppointment.php";
-            disapprovePending_URL = "http://192.168.1.9/faculty_scheduler/doctorDisapprovedPending.php";
-            viewMyAppointments_URL = "http://192.168.1.9/faculty_scheduler/getDoctorsAppointments.php";
+            approvePending_URL = "http://192.168.1.2/faculty_scheduler/doctorApprovedAppointment.php";
+            disapprovePending_URL = "http://192.168.1.2/faculty_scheduler/doctorDisapprovedPending.php";
+            viewMyAppointments_URL = "http://192.168.1.2/faculty_scheduler/getDoctorsAppointments.php";
 
         }
 

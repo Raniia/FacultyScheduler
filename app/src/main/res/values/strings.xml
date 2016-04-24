@@ -34,4 +34,7 @@
     <string name="title_activity_student_set_appointment_saturday_second">
         StudentSetAppointmentSaturdaySecond
     </string>
+    <string name="title_activity_student_set_appointment_saturday_gap_one">
+        StudentSetAppointmentSaturdayGapOne
+    </string>
 </resources>

@@ -134,9 +134,9 @@ public class StudentsHomepage extends Activity {
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.9/faculty_scheduler/getDoctors.php";
-            viewMyAppointments_URL = "http://192.168.1.9/faculty_scheduler/getStudentsAppointments.php";
-            studentImage = "http://192.168.1.9/faculty_scheduler/images/" + student_picture ;
+            viewDoctorsURL = "http://192.168.1.2/faculty_scheduler/getDoctors.php";
+            viewMyAppointments_URL = "http://192.168.1.2/faculty_scheduler/getStudentsAppointments.php";
+            studentImage = "http://192.168.1.2/faculty_scheduler/images/" + student_picture ;
 
         }
 
@@ -258,7 +258,7 @@ else if (result.contains("timing")) {
             this.bmImage = bmImage;
         }
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay ="http://192.168.1.9/faculty_scheduler/studentAvatars/" + student_picture ;
+            String urldisplay ="http://192.168.1.2/faculty_scheduler/studentAvatars/" + student_picture ;
 
             Bitmap mIcon = null;
             try {

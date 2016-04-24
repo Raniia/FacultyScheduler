@@ -116,7 +116,8 @@ public class ScheduleOfDoctors extends Activity {
     String doctor_ID;
     String dayOfWeek;
 
-    static final int DATE_DIALOG_ID = 0;
+    static final int saturdaySecond = 0;
+    static final int saturdaygap1  = 1;
 
     // variables to save user selected date and time
     private int mYear, mMonth, mDay;
@@ -141,11 +142,8 @@ public class ScheduleOfDoctors extends Activity {
         public void onDateSet(DatePicker view, int yearSelected,
                               int monthOfYear, int dayOfMonth) {
             SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
-
             Date date = new Date(yearSelected, monthOfYear, dayOfMonth - 1);
-
             dayOfWeek = simpledateformat.format(date);
-
 
             Log.d("DAY OF WEEK IS", dayOfWeek);
             if (dayOfWeek.equals("Saturday")) {
@@ -153,17 +151,11 @@ public class ScheduleOfDoctors extends Activity {
                 mMonth = monthOfYear;
                 mDay = dayOfMonth;
 
-
-
                 updateDate();
-
-
                 Date d = new Date(mYear-1900,mMonth,mDay);
                 SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                 finalDate = inFormat.format(d);
-
-
                 Toast.makeText(getApplicationContext(), new StringBuilder().append("Date choosen is ").append(finalDate), Toast.LENGTH_SHORT).show();
 
           //  Toast.makeText(getApplicationContext(), "Date selected is: " + mDay + "-" + mMonth + "-" + mYear, Toast.LENGTH_LONG).show();
@@ -184,12 +176,59 @@ public class ScheduleOfDoctors extends Activity {
         }
     };
 
+
+
+
+
+    private DatePickerDialog.OnDateSetListener aDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        // the callback received when the user "sets" the Date in the DatePickerDialog
+        public void onDateSet(DatePicker view, int yearSelected,
+                              int monthOfYear, int dayOfMonth) {
+            SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
+            Date date = new Date(yearSelected, monthOfYear, dayOfMonth - 1);
+            dayOfWeek = simpledateformat.format(date);
+
+            Log.d("DAY OF WEEK IS", dayOfWeek);
+            if (dayOfWeek.equals("Saturday")) {
+                mYear = yearSelected;
+                mMonth = monthOfYear;
+                mDay = dayOfMonth;
+
+                updateDate();
+                Date d = new Date(mYear-1900,mMonth,mDay);
+                SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                finalDate = inFormat.format(d);
+                Toast.makeText(getApplicationContext(), new StringBuilder().append("Date choosen is ").append(finalDate), Toast.LENGTH_SHORT).show();
+
+                //  Toast.makeText(getApplicationContext(), "Date selected is: " + mDay + "-" + mMonth + "-" + mYear, Toast.LENGTH_LONG).show();
+                //datePassed =  mYear + "-" + mMonth + "-" + mDay;
+
+                Log.d("daaaaaate", finalDate);
+
+                String method = "setAppointmentSaturdaygap1";
+                BackgroundTask backgroundTask = new BackgroundTask();
+                backgroundTask.execute(method,doctor_ID,finalDate);
+
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), "This day is not Saturday, Please choose another day.", Toast.LENGTH_LONG).show();
+
+            }
+        }
+    };
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case DATE_DIALOG_ID:
+            case saturdaySecond:
                 return new DatePickerDialog(this,
                         mDateSetListener,
+                        mYear, mMonth, mDay);
+
+            case saturdaygap1:
+                return new DatePickerDialog(this,
+                        aDateSetListener,
                         mYear, mMonth, mDay);
 
 
@@ -249,10 +288,8 @@ public class ScheduleOfDoctors extends Activity {
                 textview14.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        showDialog(saturdaygap1);
 
-                        String method = "setAppointmentSaturdaygap1";
-                        BackgroundTask backgroundTask = new BackgroundTask();
-                        backgroundTask.execute(method, doctor_ID);
                     }
                 });
 
@@ -276,7 +313,10 @@ public class ScheduleOfDoctors extends Activity {
                         backgroundTask.execute(method,doctor_ID);*/
 
 
-                        showDialog(DATE_DIALOG_ID);
+                        showDialog(saturdaySecond);
+
+
+
 
                         /*String method = "setAppointmentSaturdaySecond";
                         BackgroundTask backgroundTask = new BackgroundTask();
@@ -384,13 +424,20 @@ public class ScheduleOfDoctors extends Activity {
 
     public class BackgroundTask extends AsyncTask<String, Void, String> {
         String saturdaySecondSlotAppointments;
+        String saturdayGap1;
         JSONArray jsonArray;
+
+        String seventhFree;
+        String eighthFree;
+
         String ninthFree;
         String tenthFree;
         String eleventhFree;
         String twelfthFree;
         String thirteenthFree;
         String fourteenthFree;
+
+
         String dateAppointment;
 
         @Override
@@ -408,7 +455,7 @@ public class ScheduleOfDoctors extends Activity {
                 String datePassed = params[2];
 
                 try {
-                    String setAppointmentSaturdaySecond_URL = "http://192.168.1.9/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
+                    String setAppointmentSaturdaySecond_URL = "http://192.168.1.2/faculty_scheduler/studentSetAppointmentSaturdaySecond.php";
                     URL url = new URL(setAppointmentSaturdaySecond_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -463,11 +510,67 @@ public class ScheduleOfDoctors extends Activity {
                     e.printStackTrace();
                 }
             } else if (method.equals("setAppointmentSaturdaygap1")) {
-              //  String doctor_ID = params[1];
+                String doctor_ID = params[1];
+                String datePassed = params[2];
 
-                //  try {
-                //    String setAppointmentSaturdaygap1_URL = "http://192.168.1.3/faculty_scheduler/studentSetAppointmentSaturdaygap1.php";
-                //  URL url = new URL(setAppointmentSaturdaygap1_URL);
+                try {
+                    String setAppointmentSaturdaySecond_URL = "http://192.168.1.2/faculty_scheduler/studentSetAppointmentSaturdaygap1.php";
+                    URL url = new URL(setAppointmentSaturdaySecond_URL);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    OutputStream OS = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                    String data = URLEncoder.encode("doctor_ID", "UTF-8") + "=" + URLEncoder.encode(doctor_ID, "UTF-8")+ "&" +
+                            URLEncoder.encode("datePassed", "UTF-8") + "=" + URLEncoder.encode(datePassed, "UTF-8");
+                    bufferedWriter.write(data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    OS.close();
+                    InputStream IS = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                    String response = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+
+                    Log.d("doctor id is", doctor_ID + datePassed);
+
+                    Log.d("doctor id is", "Response is: " + response);
+
+
+                    try {
+                        saturdayGap1 = response;
+                        JSONObject object = new JSONObject(saturdayGap1);
+                        jsonArray = object.getJSONArray("saturdayGap1");
+
+                        seventhFree = jsonArray.getJSONObject(0).getString("seventhFree");
+                        eighthFree = jsonArray.getJSONObject(0).getString("eighthFree");
+
+
+                        dateAppointment= jsonArray.getJSONObject(0).getString("dateAppointment");
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    bufferedReader.close();
+                    IS.close();
+                    httpURLConnection.disconnect();
+                    return response;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
             }
 
             return null;
@@ -480,7 +583,8 @@ public class ScheduleOfDoctors extends Activity {
 
         protected void onPostExecute(String result) {
 
-            if (result.contains("dateAppointment")) {
+            if (result.contains("ninthFree")) {
+                saturdaySecondSlotAppointments = result;
                 if (ninthFree.equals("0") && tenthFree.equals("0") && eleventhFree.equals("0") && twelfthFree.equals("0") && thirteenthFree.equals("0") && fourteenthFree.equals("0")) {
                     Toast.makeText(getApplicationContext(), "No free timings available. Choose another time.", Toast.LENGTH_LONG).show();
 
@@ -490,6 +594,18 @@ public class ScheduleOfDoctors extends Activity {
                     intent.putExtra("saturdaySecondSlotAppointments", saturdaySecondSlotAppointments);
                     startActivity(intent);
 
+                }
+            }
+
+            else  if(result.contains("seventhFree")) {
+                saturdayGap1 = result;
+                if (seventhFree.equals("0") && eighthFree.equals("0")) {
+                    Toast.makeText(getApplicationContext(), "No free timings available. Choose another time.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(context, StudentSetAppointmentSaturdayGapOne.class);
+                    intent.putExtra("saturdayGap1", saturdayGap1);
+                    startActivity(intent);
                 }
             }
 
