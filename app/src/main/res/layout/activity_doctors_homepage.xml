@@ -23,9 +23,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="doctor_name"
             android:textSize="30dp"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:id="@+id/doctor_name"
-            android:background="@drawable/round_cornername"
 
             android:layout_below="@+id/avatar"
             android:layout_centerHorizontal="true"
