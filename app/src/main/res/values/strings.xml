@@ -37,4 +37,10 @@
     <string name="title_activity_student_set_appointment_saturday_gap_one">
         StudentSetAppointmentSaturdayGapOne
     </string>
+    <string name="title_activity_doctor_edit_schedule_sunday">doctorEditScheduleSunday</string>
+    <string name="title_activity_doctor_edit_schedule_monday">doctorEditScheduleMonday</string>
+    <string name="title_activity_doctor_edit_schedule_tuesday">doctorEditScheduleTuesday</string>
+    <string name="title_activity_doctor_edit_schedule_wednesday">doctorEditScheduleWednesday
+    </string>
+    <string name="title_activity_doctor_edit_schedule_thursday">doctorEditScheduleThursday</string>
 </resources>

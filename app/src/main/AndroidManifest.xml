@@ -83,6 +83,26 @@
             android:name=".StudentSetAppointmentSaturdayGapOne"
             android:label="@string/title_activity_student_set_appointment_saturday_gap_one" >
         </activity>
+        <activity
+            android:name=".doctorEditScheduleSunday"
+            android:label="@string/title_activity_doctor_edit_schedule_sunday" >
+        </activity>
+        <activity
+            android:name=".doctorEditScheduleMonday"
+            android:label="@string/title_activity_doctor_edit_schedule_monday" >
+        </activity>
+        <activity
+            android:name=".doctorEditScheduleTuesday"
+            android:label="@string/title_activity_doctor_edit_schedule_tuesday" >
+        </activity>
+        <activity
+            android:name=".doctorEditScheduleWednesday"
+            android:label="@string/title_activity_doctor_edit_schedule_wednesday" >
+        </activity>
+        <activity
+            android:name=".doctorEditScheduleThursday"
+            android:label="@string/title_activity_doctor_edit_schedule_thursday" >
+        </activity>
     </application>
 
 </manifest>
