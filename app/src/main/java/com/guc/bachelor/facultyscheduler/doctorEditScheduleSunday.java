@@ -375,7 +375,7 @@ public class doctorEditScheduleSunday extends Activity
             if (method.equals("doctorEditScheduleSunday")) {
                 try {
 
-                    String setAppointment_URL = "http://192.168.1.2/faculty_scheduler/doctorEditScheduleSunday.php";
+                    String setAppointment_URL = "http://192.168.43.88/faculty_scheduler/doctorEditScheduleSunday.php";
                     URL url = new URL(setAppointment_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");

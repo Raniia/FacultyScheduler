@@ -475,7 +475,7 @@ String appointmentPurpose;
             if (method.equals("setAppointmentSaturdaySecond")) {
                 try {
 
-                    String setAppointment_URL = "http://192.168.1.2/faculty_scheduler/setAppointment.php";
+                    String setAppointment_URL = "http://192.168.43.88/faculty_scheduler/setAppointment.php";
                     URL url = new URL(setAppointment_URL);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -517,7 +517,7 @@ String appointmentPurpose;
 
             else if (method.equals("showStudentsAppointments")){
                 try{
-                String  viewMyAppointments_URL = "http://192.168.1.2/faculty_scheduler/getStudentsAppointments.php";
+                String  viewMyAppointments_URL = "http://192.168.43.88/faculty_scheduler/getStudentsAppointments.php";
                 URL url = new URL(viewMyAppointments_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");

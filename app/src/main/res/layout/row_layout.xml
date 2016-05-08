@@ -11,19 +11,21 @@
         android:text="Name"
         android:gravity="center"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/rounded_edittext"
+        android:textSize="15dp"
 
+        android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/viewSchedule" />
 
     <Button
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:text="View Schedule"
         android:id="@+id/viewSchedule"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:textColor="#FFFFFF"
+        android:textSize="15dp"
+
         android:background="@drawable/loginselector"
 
         />

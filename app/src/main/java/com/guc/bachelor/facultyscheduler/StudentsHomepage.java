@@ -1,16 +1,22 @@
 package com.guc.bachelor.facultyscheduler;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +35,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentsHomepage extends Activity {
+
+/*
+    String doctorIDDisapproved;
+    String timingDisApproved;
+    String dateDisapproved;
+    AppointmentsAdapter appointmentsAdapter;*/
+
+
+
     String json_string;
     String allDoctors;
     TextView studentID;
@@ -52,6 +69,32 @@ public class StudentsHomepage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_students_homepage);
 
+
+/*
+
+
+         appointmentsAdapter = new AppointmentsAdapter(this,R.layout.disapproved_appointments);
+        new AlertDialog.Builder(StudentsHomepage.this)
+                .setAdapter(appointmentsAdapter, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO - Code when list item is clicked (int which - is param that gives you the index of clicked item)
+                    }
+                })
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+
+                .setTitle("Disapproved Appointments")
+                .setCancelable(false)
+                .show();
+
+*/
 
 
         json_string = getIntent().getExtras().getString("student_login");
@@ -119,6 +162,66 @@ public class StudentsHomepage extends Activity {
 
 
 
+
+/*
+
+    public class AppointmentsAdapter extends ArrayAdapter {
+        List list = new ArrayList();
+
+
+        public AppointmentsAdapter(Context context, int resource) {
+            super(context, resource);
+        }
+
+
+        public void add(Appointments object) {
+            super.add(object);
+            list.add(object);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View row;
+            row = convertView;
+            AppointmentsHolder appointmentsHolder;
+
+            if (row == null) {
+                LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                row = layoutInflater.inflate(R.layout.disapproved_appointments, parent, false);
+                appointmentsHolder = new AppointmentsHolder();
+                row.setTag(appointmentsHolder);
+
+            } else {
+                appointmentsHolder = (AppointmentsHolder) row.getTag();
+            }
+            Appointments appointments = (Appointments) this.getItem(position);
+            appointmentsHolder.message.setText("Doctor" + appointments.getDoctor_ID() + "has disapproved your appointment at" + appointments.getTiming() + "on" + appointments.getDateAppointment());
+
+            return row;
+        }
+
+
+        public class AppointmentsHolder {
+            TextView message;
+
+        }
+
+
+    }
+*/
+
+
+
     class BackgroundTask extends AsyncTask<String, Void, String> {
         Context ctx;
 
@@ -131,12 +234,15 @@ public class StudentsHomepage extends Activity {
         String passStudentSessionURL;
         String studentImage;
         String viewMyAppointments_URL;
+       // String getStudentsDisapprovedAppointments_URL;
 
         @Override
         protected void onPreExecute() {
-            viewDoctorsURL = "http://192.168.1.2/faculty_scheduler/getDoctors.php";
-            viewMyAppointments_URL = "http://192.168.1.2/faculty_scheduler/getStudentsAppointments.php";
-            studentImage = "http://192.168.1.2/faculty_scheduler/images/" + student_picture ;
+            viewDoctorsURL = "http://192.168.43.88/faculty_scheduler/getDoctors.php";
+            viewMyAppointments_URL = "http://192.168.43.88/faculty_scheduler/getStudentsAppointments.php";
+            studentImage = "http://192.168.43.88/faculty_scheduler/images/" + student_picture;
+           // getStudentsDisapprovedAppointments_URL = "http://192.168.1.3/faculty_scheduler/disApprovedAppointments.php";
+
 
         }
 
@@ -147,6 +253,8 @@ public class StudentsHomepage extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
+
+
             String method = params[0];
             if (method.equals("viewDoctors")) {
                 try {
@@ -173,9 +281,7 @@ public class StudentsHomepage extends Activity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-
-            else if (method.equals("studentsAppointments")) {
+            } else if (method.equals("studentsAppointments")) {
                 String student_ID = params[1];
 
                 try {
@@ -215,35 +321,114 @@ public class StudentsHomepage extends Activity {
             return null;
 
 
-
-
         }
 
 
         @Override
         protected void onPostExecute(String result) {
-if (result.contains("doctor_name")) {
-    allDoctors = result;
-    Intent intent = new Intent(ctx, ViewListDoctors.class);
-    intent.putExtra("viewDoctors", allDoctors);
-    startActivity(intent);
-}
-else if (result.contains("timing")) {
-
-    myAppointments = result;
+          /*  if (result.contains("disapproved")) {
+                int count = 0;
+                try {
+                    JSONObject object = new JSONObject(result);
+                    JSONArray jsonArray = object.getJSONArray("disapprovedAppointments");
 
 
-    if (!myAppointments.contains("doctor_ID")) {
-        Toast.makeText(getApplicationContext(), "You have no appointments.", Toast.LENGTH_LONG).show();
+                    while (count < jsonArray.length()) {
+                        JSONObject JO = jsonArray.getJSONObject(count);
+                        doctorIDDisapproved = JO.getString("doctor_ID");
+                        timingDisApproved = JO.getString("timing");
+                        dateDisapproved = JO.getString("dateAppointment");
+                        //  doctor_ID = JO.getString("doctor_ID");
+                        Appointments appointments = new Appointments(doctorIDDisapproved, dateDisapproved, timingDisApproved);
+                        appointmentsAdapter.add(appointments);
+                        count++;
 
-    } else {
+                    }
 
-        Intent intent = new Intent(context, StudentsAppointments.class);
-        intent.putExtra("studentsAppointments", myAppointments);
-        startActivity(intent);
-    }
-}
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+*/
+            if (result.contains("doctor_name")) {
+                allDoctors = result;
+                Intent intent = new Intent(ctx, ViewListDoctors.class);
+                intent.putExtra("viewDoctors", allDoctors);
+                startActivity(intent);
+            } else if (result.contains("timing")) {
+
+                myAppointments = result;
+
+
+                if (!myAppointments.contains("doctor_ID")) {
+                    Toast.makeText(getApplicationContext(), "You have no appointments.", Toast.LENGTH_LONG).show();
+
+                } else {
+
+                    Intent intent = new Intent(context, StudentsAppointments.class);
+                    intent.putExtra("studentsAppointments", myAppointments);
+                    startActivity(intent);
+                }
+            }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -258,7 +443,7 @@ else if (result.contains("timing")) {
             this.bmImage = bmImage;
         }
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay ="http://192.168.1.2/faculty_scheduler/studentAvatars/" + student_picture ;
+            String urldisplay ="http://192.168.43.88/faculty_scheduler/studentAvatars/" + student_picture ;
 
             Bitmap mIcon = null;
             try {
@@ -275,6 +460,60 @@ else if (result.contains("timing")) {
             bmImage.setImageBitmap(result);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
